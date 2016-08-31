@@ -1,1 +1,1 @@
-/usr/bin/cc      CMakeFiles/startServer.dir/server.c.o  -o startServer -rdynamic 
+/usr/bin/c++       CMakeFiles/startServer.dir/server.cpp.o  -o startServer -rdynamic 

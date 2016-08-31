@@ -6,19 +6,21 @@
 
 #IncludeRegexTransform: 
 
-/home/odroid/Documents/Thesis/ServerTesting/server.c
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting/clientTest.cpp
 stdio.h
 -
 stdlib.h
 -
-string.h
--
 unistd.h
+-
+string.h
 -
 sys/types.h
 -
 sys/socket.h
 -
 netinet/in.h
+-
+netdb.h
 -
 

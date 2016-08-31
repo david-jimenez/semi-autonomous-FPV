@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/odroid/Documents/Thesis/clientTesting
+CMAKE_SOURCE_DIR = /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/odroid/Documents/Thesis/clientTesting
+CMAKE_BINARY_DIR = /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -73,9 +73,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/odroid/Documents/Thesis/clientTesting/CMakeFiles /home/odroid/Documents/Thesis/clientTesting/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting/CMakeFiles /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/odroid/Documents/Thesis/clientTesting/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -115,29 +115,29 @@ startClient/fast:
 	$(MAKE) -f CMakeFiles/startClient.dir/build.make CMakeFiles/startClient.dir/build
 .PHONY : startClient/fast
 
-clientTest.o: clientTest.c.o
+clientTest.o: clientTest.cpp.o
 .PHONY : clientTest.o
 
 # target to build an object file
-clientTest.c.o:
-	$(MAKE) -f CMakeFiles/startClient.dir/build.make CMakeFiles/startClient.dir/clientTest.c.o
-.PHONY : clientTest.c.o
+clientTest.cpp.o:
+	$(MAKE) -f CMakeFiles/startClient.dir/build.make CMakeFiles/startClient.dir/clientTest.cpp.o
+.PHONY : clientTest.cpp.o
 
-clientTest.i: clientTest.c.i
+clientTest.i: clientTest.cpp.i
 .PHONY : clientTest.i
 
 # target to preprocess a source file
-clientTest.c.i:
-	$(MAKE) -f CMakeFiles/startClient.dir/build.make CMakeFiles/startClient.dir/clientTest.c.i
-.PHONY : clientTest.c.i
+clientTest.cpp.i:
+	$(MAKE) -f CMakeFiles/startClient.dir/build.make CMakeFiles/startClient.dir/clientTest.cpp.i
+.PHONY : clientTest.cpp.i
 
-clientTest.s: clientTest.c.s
+clientTest.s: clientTest.cpp.s
 .PHONY : clientTest.s
 
 # target to generate assembly for a file
-clientTest.c.s:
-	$(MAKE) -f CMakeFiles/startClient.dir/build.make CMakeFiles/startClient.dir/clientTest.c.s
-.PHONY : clientTest.c.s
+clientTest.cpp.s:
+	$(MAKE) -f CMakeFiles/startClient.dir/build.make CMakeFiles/startClient.dir/clientTest.cpp.s
+.PHONY : clientTest.cpp.s
 
 # Help Target
 help:

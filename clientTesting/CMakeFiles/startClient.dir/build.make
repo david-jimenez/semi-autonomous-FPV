@@ -35,10 +35,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/odroid/Documents/Thesis/clientTesting
+CMAKE_SOURCE_DIR = /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/odroid/Documents/Thesis/clientTesting
+CMAKE_BINARY_DIR = /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting
 
 # Include any dependencies generated for this target.
 include CMakeFiles/startClient.dir/depend.make
@@ -49,47 +49,47 @@ include CMakeFiles/startClient.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/startClient.dir/flags.make
 
-CMakeFiles/startClient.dir/clientTest.c.o: CMakeFiles/startClient.dir/flags.make
-CMakeFiles/startClient.dir/clientTest.c.o: clientTest.c
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/odroid/Documents/Thesis/clientTesting/CMakeFiles $(CMAKE_PROGRESS_1)
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building C object CMakeFiles/startClient.dir/clientTest.c.o"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -o CMakeFiles/startClient.dir/clientTest.c.o   -c /home/odroid/Documents/Thesis/clientTesting/clientTest.c
+CMakeFiles/startClient.dir/clientTest.cpp.o: CMakeFiles/startClient.dir/flags.make
+CMakeFiles/startClient.dir/clientTest.cpp.o: clientTest.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting/CMakeFiles $(CMAKE_PROGRESS_1)
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/startClient.dir/clientTest.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/startClient.dir/clientTest.cpp.o -c /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting/clientTest.cpp
 
-CMakeFiles/startClient.dir/clientTest.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/startClient.dir/clientTest.c.i"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -E /home/odroid/Documents/Thesis/clientTesting/clientTest.c > CMakeFiles/startClient.dir/clientTest.c.i
+CMakeFiles/startClient.dir/clientTest.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/startClient.dir/clientTest.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -E /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting/clientTest.cpp > CMakeFiles/startClient.dir/clientTest.cpp.i
 
-CMakeFiles/startClient.dir/clientTest.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/startClient.dir/clientTest.c.s"
-	/usr/bin/cc  $(C_DEFINES) $(C_FLAGS) -S /home/odroid/Documents/Thesis/clientTesting/clientTest.c -o CMakeFiles/startClient.dir/clientTest.c.s
+CMakeFiles/startClient.dir/clientTest.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/startClient.dir/clientTest.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_FLAGS) -S /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting/clientTest.cpp -o CMakeFiles/startClient.dir/clientTest.cpp.s
 
-CMakeFiles/startClient.dir/clientTest.c.o.requires:
-.PHONY : CMakeFiles/startClient.dir/clientTest.c.o.requires
+CMakeFiles/startClient.dir/clientTest.cpp.o.requires:
+.PHONY : CMakeFiles/startClient.dir/clientTest.cpp.o.requires
 
-CMakeFiles/startClient.dir/clientTest.c.o.provides: CMakeFiles/startClient.dir/clientTest.c.o.requires
-	$(MAKE) -f CMakeFiles/startClient.dir/build.make CMakeFiles/startClient.dir/clientTest.c.o.provides.build
-.PHONY : CMakeFiles/startClient.dir/clientTest.c.o.provides
+CMakeFiles/startClient.dir/clientTest.cpp.o.provides: CMakeFiles/startClient.dir/clientTest.cpp.o.requires
+	$(MAKE) -f CMakeFiles/startClient.dir/build.make CMakeFiles/startClient.dir/clientTest.cpp.o.provides.build
+.PHONY : CMakeFiles/startClient.dir/clientTest.cpp.o.provides
 
-CMakeFiles/startClient.dir/clientTest.c.o.provides.build: CMakeFiles/startClient.dir/clientTest.c.o
+CMakeFiles/startClient.dir/clientTest.cpp.o.provides.build: CMakeFiles/startClient.dir/clientTest.cpp.o
 
 # Object files for target startClient
 startClient_OBJECTS = \
-"CMakeFiles/startClient.dir/clientTest.c.o"
+"CMakeFiles/startClient.dir/clientTest.cpp.o"
 
 # External object files for target startClient
 startClient_EXTERNAL_OBJECTS =
 
-startClient: CMakeFiles/startClient.dir/clientTest.c.o
+startClient: CMakeFiles/startClient.dir/clientTest.cpp.o
 startClient: CMakeFiles/startClient.dir/build.make
 startClient: CMakeFiles/startClient.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking C executable startClient"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable startClient"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/startClient.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 CMakeFiles/startClient.dir/build: startClient
 .PHONY : CMakeFiles/startClient.dir/build
 
-CMakeFiles/startClient.dir/requires: CMakeFiles/startClient.dir/clientTest.c.o.requires
+CMakeFiles/startClient.dir/requires: CMakeFiles/startClient.dir/clientTest.cpp.o.requires
 .PHONY : CMakeFiles/startClient.dir/requires
 
 CMakeFiles/startClient.dir/clean:
@@ -97,6 +97,6 @@ CMakeFiles/startClient.dir/clean:
 .PHONY : CMakeFiles/startClient.dir/clean
 
 CMakeFiles/startClient.dir/depend:
-	cd /home/odroid/Documents/Thesis/clientTesting && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/odroid/Documents/Thesis/clientTesting /home/odroid/Documents/Thesis/clientTesting /home/odroid/Documents/Thesis/clientTesting /home/odroid/Documents/Thesis/clientTesting /home/odroid/Documents/Thesis/clientTesting/CMakeFiles/startClient.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting/CMakeFiles/startClient.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/startClient.dir/depend
 

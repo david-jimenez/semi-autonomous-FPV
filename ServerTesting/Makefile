@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/odroid/Documents/Thesis/ServerTesting
+CMAKE_SOURCE_DIR = /home/odroid/Documents/Thesis/semi-autonomous-FPV/ServerTesting
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/odroid/Documents/Thesis/ServerTesting
+CMAKE_BINARY_DIR = /home/odroid/Documents/Thesis/semi-autonomous-FPV/ServerTesting
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -73,9 +73,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/odroid/Documents/Thesis/ServerTesting/CMakeFiles /home/odroid/Documents/Thesis/ServerTesting/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/odroid/Documents/Thesis/semi-autonomous-FPV/ServerTesting/CMakeFiles /home/odroid/Documents/Thesis/semi-autonomous-FPV/ServerTesting/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/odroid/Documents/Thesis/ServerTesting/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/odroid/Documents/Thesis/semi-autonomous-FPV/ServerTesting/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -115,29 +115,29 @@ startServer/fast:
 	$(MAKE) -f CMakeFiles/startServer.dir/build.make CMakeFiles/startServer.dir/build
 .PHONY : startServer/fast
 
-server.o: server.c.o
+server.o: server.cpp.o
 .PHONY : server.o
 
 # target to build an object file
-server.c.o:
-	$(MAKE) -f CMakeFiles/startServer.dir/build.make CMakeFiles/startServer.dir/server.c.o
-.PHONY : server.c.o
+server.cpp.o:
+	$(MAKE) -f CMakeFiles/startServer.dir/build.make CMakeFiles/startServer.dir/server.cpp.o
+.PHONY : server.cpp.o
 
-server.i: server.c.i
+server.i: server.cpp.i
 .PHONY : server.i
 
 # target to preprocess a source file
-server.c.i:
-	$(MAKE) -f CMakeFiles/startServer.dir/build.make CMakeFiles/startServer.dir/server.c.i
-.PHONY : server.c.i
+server.cpp.i:
+	$(MAKE) -f CMakeFiles/startServer.dir/build.make CMakeFiles/startServer.dir/server.cpp.i
+.PHONY : server.cpp.i
 
-server.s: server.c.s
+server.s: server.cpp.s
 .PHONY : server.s
 
 # target to generate assembly for a file
-server.c.s:
-	$(MAKE) -f CMakeFiles/startServer.dir/build.make CMakeFiles/startServer.dir/server.c.s
-.PHONY : server.c.s
+server.cpp.s:
+	$(MAKE) -f CMakeFiles/startServer.dir/build.make CMakeFiles/startServer.dir/server.cpp.s
+.PHONY : server.cpp.s
 
 # Help Target
 help:

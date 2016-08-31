@@ -1,4 +1,4 @@
-# Install script for directory: /home/odroid/Documents/Thesis/clientTesting
+# Install script for directory: /home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -38,7 +38,7 @@ else()
   set(CMAKE_INSTALL_MANIFEST "install_manifest.txt")
 endif()
 
-file(WRITE "/home/odroid/Documents/Thesis/clientTesting/${CMAKE_INSTALL_MANIFEST}" "")
+file(WRITE "/home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting/${CMAKE_INSTALL_MANIFEST}" "")
 foreach(file ${CMAKE_INSTALL_MANIFEST_FILES})
-  file(APPEND "/home/odroid/Documents/Thesis/clientTesting/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
+  file(APPEND "/home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting/${CMAKE_INSTALL_MANIFEST}" "${file}\n")
 endforeach()

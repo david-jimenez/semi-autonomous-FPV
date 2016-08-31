@@ -1,12 +1,12 @@
 # The set of languages for which implicit dependencies are needed:
 set(CMAKE_DEPENDS_LANGUAGES
-  "C"
+  "CXX"
   )
 # The set of files for implicit dependencies of each language:
-set(CMAKE_DEPENDS_CHECK_C
-  "/home/odroid/Documents/Thesis/clientTesting/clientTest.c" "/home/odroid/Documents/Thesis/clientTesting/CMakeFiles/startClient.dir/clientTest.c.o"
+set(CMAKE_DEPENDS_CHECK_CXX
+  "/home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting/clientTest.cpp" "/home/odroid/Documents/Thesis/semi-autonomous-FPV/clientTesting/CMakeFiles/startClient.dir/clientTest.cpp.o"
   )
-set(CMAKE_C_COMPILER_ID "GNU")
+set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # Targets to which this target links.
 set(CMAKE_TARGET_LINKED_INFO_FILES
