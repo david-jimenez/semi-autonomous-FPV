@@ -1,0 +1,1 @@
+/usr/bin/cc      CMakeFiles/startClient.dir/clientTest.c.o  -o startClient -rdynamic 
