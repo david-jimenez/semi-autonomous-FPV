@@ -1,0 +1,1 @@
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/opencvTesting/CMakeFiles/cv_capture_example.dir

@@ -29,6 +29,7 @@
 // configuration parameters
 #define NUM_COMNMAND_LINE_ARGUMENTS 2
 #define DISPLAY_WINDOW_NAME "Camera Image"
+#define DISPLAY_WINDOW_NAME_2 "Camera Image2"
 
 /*******************************************************************************************************************//**
  * @brief Process a single image frame
@@ -39,7 +40,24 @@
 bool processFrame(const cv::Mat &imageIn)
 {
     // process the image frame
+	
     return true;
+}
+
+void mysetup(cv::VideoCapture* capture){
+	capture->set(CV_CAP_PROP_FRAME_WIDTH, 320.0);
+	capture->set(CV_CAP_PROP_FRAME_HEIGHT, 240.0);
+	int captureFPS = static_cast<int>(capture->get(CV_CAP_PROP_FPS));
+	capture->set(CV_CAP_PROP_FPS, 100.0);
+	std::printf("Old FPS: %d\n", captureFPS);
+	cv::waitKey(15);
+	int captureWidth = static_cast<int>(capture->get(CV_CAP_PROP_FRAME_WIDTH));
+    int captureHeight = static_cast<int>(capture->get(CV_CAP_PROP_FRAME_HEIGHT));
+	captureFPS = static_cast<int>(capture->get(CV_CAP_PROP_FPS));
+	
+	std::printf("New Width %d\n", captureWidth);
+	std::printf("New Height %d\n", captureHeight);
+	std::printf("New FPS %d\n", captureFPS);
 }
 
 /***********************************************************************************************************************
@@ -71,7 +89,13 @@ int main(int argc, char **argv)
 
     // initialize the camera capture
     cv::VideoCapture capture(cameraIndex);
+	cv::VideoCapture capture2(cameraIndex + 1);
     if(!capture.isOpened())
+    {
+        std::printf("Unable to open video source, terminating program! \n");
+        return 0;
+    }
+	if(!capture2.isOpened())
     {
         std::printf("Unable to open video source, terminating program! \n");
         return 0;
@@ -80,14 +104,18 @@ int main(int argc, char **argv)
     // get the video source paramters
     int captureWidth = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_WIDTH));
     int captureHeight = static_cast<int>(capture.get(CV_CAP_PROP_FRAME_HEIGHT));
-    std::printf("Video source opened successfully (width=%d height=%d)! \n", captureWidth, captureHeight);
-
+	
+    std::printf("%d\n", captureWidth);
+	std::printf("%d\n", captureHeight);
+	mysetup(&capture);
+	mysetup(&capture2);
+	
     // create the debug image windows
     if(showFrames)
     {
         cv::namedWindow(DISPLAY_WINDOW_NAME, CV_WINDOW_AUTOSIZE);
+        cv::namedWindow(DISPLAY_WINDOW_NAME_2, CV_WINDOW_AUTOSIZE);
     }
-
     // process data until program termination
     bool doCapture = true;
     int frameCount = 0;
@@ -98,12 +126,26 @@ int main(int argc, char **argv)
 
         // attempt to acquire an image frame
         cv::Mat captureFrame;
+		cv::Mat captureFrame2;
         bool captureSuccess = capture.read(captureFrame);
         if(captureSuccess)
         {
             // process the image frame
             processFrame(captureFrame);
-
+			std::printf("capture success: %d", frameCount);
+            // increment the frame counter
+            frameCount++;
+        }
+        else
+        {
+            std::printf("Unable to acquire image frame! \n");
+        }
+		bool captureSuccess2 = capture2.read(captureFrame2);
+        if(captureSuccess2)
+        {
+            // process the image frame
+            processFrame(captureFrame2);
+			std::printf("capture success: %d", frameCount);
             // increment the frame counter
             frameCount++;
         }
@@ -113,9 +155,10 @@ int main(int argc, char **argv)
         }
 
         // update the GUI window if necessary
-        if(showFrames && captureSuccess)
+        if(showFrames && captureSuccess && captureSuccess2)
         {
             cv::imshow(DISPLAY_WINDOW_NAME, captureFrame);
+			cv::imshow(DISPLAY_WINDOW_NAME_2, captureFrame2);
 
             // check for program termination
             if(((char) cv::waitKey(1)) == 'q')
