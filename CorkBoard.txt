@@ -1,0 +1,20 @@
+Tasks/features Yet To Implement:
+Power the Odroids whilst on the quad
+Conduct capture of stereo footage for accuracy tests
+Mounting of stereo camera on quad platform
+Mounting of odroids on quad platform
+Mounting of flow camera on quad platform
+Mounting of GPS on quad platform
+Test flight for physical feasability with all hardware attached
+Cleanup of Git by removing files that need not be tracked
+PWM output to ESC's
+Combine current test programs into one cohesive process that has access to all the data.
+
+Known Bugs/errors that need fixing:
+
+
+Miscellaneous Notes:
+Fully Integrated Test Flight      Sun           02 October 2016 (end of mid sem break)
+Thesis Draft to Supervisor        3:00pm Fri    03 October 2016 (S2 week 10)
+Thesis Seminar				            all day Fri   14 October 2016 (S2 week 11)
+Thesis Final Submission		        3:00pm Thu    27 October 2016 (S2 Week 13)
