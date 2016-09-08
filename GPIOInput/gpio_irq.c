@@ -226,6 +226,7 @@ int main(int argc, char **argv, char **envp)
 		if (fdset[1].revents & POLLPRI) {
 			len = read(fdset[1].fd, buf, MAX_BUF);
 			printf("\npoll() GPIO %d interrupt occurred\n", gpio);
+			printf("And the pin value is %d\n", (int)*buf);
 		}
 
 		if (fdset[0].revents & POLLIN) {

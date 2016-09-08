@@ -71,8 +71,9 @@ int main()
     Serial s("/dev/ttyUSB0");
     MSP msp(s);
 	while(1){
-		out<Attitude>(msp, std::cout);
-		out<Altitude>(msp, std::cout);
+		//out<Attitude>(msp, std::cout);
+		//out<Altitude>(msp, std::cout);
+		out<Motor>(msp, std::cout);
 	}
 	/*
     out<Ident>(msp, std::cout);
