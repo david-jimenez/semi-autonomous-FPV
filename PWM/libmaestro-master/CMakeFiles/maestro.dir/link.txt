@@ -1,0 +1,2 @@
+/usr/bin/ar cr libmaestro.a  CMakeFiles/maestro.dir/src/maestro.cpp.o
+/usr/bin/ranlib libmaestro.a

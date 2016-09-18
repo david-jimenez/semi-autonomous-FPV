@@ -1,0 +1,2 @@
+/usr/bin/ar cr libRapaPololuMaestro.a  CMakeFiles/RapaPololuMaestro.dir/src/RPMSerialInterface.cpp.o CMakeFiles/RapaPololuMaestro.dir/src/RPMSerialInterfacePOSIX.cpp.o
+/usr/bin/ranlib libRapaPololuMaestro.a

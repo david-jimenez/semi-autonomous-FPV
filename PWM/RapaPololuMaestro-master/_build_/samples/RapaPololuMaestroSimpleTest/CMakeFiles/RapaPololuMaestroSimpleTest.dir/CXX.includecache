@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/RPMSerialInterface.h
+string
+-
+
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/PWM/RapaPololuMaestro-master/samples/RapaPololuMaestroSimpleTest/Main.cpp
+stdio.h
+-
+cmath
+-
+Windows.h
+-
+unistd.h
+-
+sys/timeb.h
+-
+time.h
+-
+sys/time.h
+-
+RPMSerialInterface.h
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/PWM/RapaPololuMaestro-master/samples/RapaPololuMaestroSimpleTest/RPMSerialInterface.h
+

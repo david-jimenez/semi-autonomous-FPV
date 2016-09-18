@@ -1,0 +1,46 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/RPMSerialInterface.h
+string
+-
+
+../include/RPMSerialInterfacePOSIX.h
+RPMSerialInterface.h
+../include/RPMSerialInterface.h
+
+../include/RPMSerialInterfaceWindows.h
+RPMSerialInterface.h
+../include/RPMSerialInterface.h
+windows.h
+-
+
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/PWM/RapaPololuMaestro-master/src/RPMSerialInterface.cpp
+RPMSerialInterface.h
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/PWM/RapaPololuMaestro-master/src/RPMSerialInterface.h
+RPMSerialInterfaceWindows.h
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/PWM/RapaPololuMaestro-master/src/RPMSerialInterfaceWindows.h
+RPMSerialInterfacePOSIX.h
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/PWM/RapaPololuMaestro-master/src/RPMSerialInterfacePOSIX.h
+
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/PWM/RapaPololuMaestro-master/src/RPMSerialInterfacePOSIX.cpp
+RPMSerialInterfacePOSIX.h
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/PWM/RapaPololuMaestro-master/src/RPMSerialInterfacePOSIX.h
+fcntl.h
+-
+unistd.h
+-
+sstream
+-
+string.h
+-
+termios.h
+-
+errno.h
+-
+

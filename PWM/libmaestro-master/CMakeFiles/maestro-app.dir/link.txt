@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/maestro-app.dir/src/maestro-app.cpp.o  -o maestro-app -rdynamic libmaestro.a -lusb-1.0 

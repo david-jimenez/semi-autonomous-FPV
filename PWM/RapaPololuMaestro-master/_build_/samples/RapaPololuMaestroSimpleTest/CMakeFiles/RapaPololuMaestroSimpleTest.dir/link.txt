@@ -1,0 +1,1 @@
+/usr/bin/c++       CMakeFiles/RapaPololuMaestroSimpleTest.dir/Main.cpp.o  -o RapaPololuMaestroSimpleTest -rdynamic ../../libRapaPololuMaestro.a 

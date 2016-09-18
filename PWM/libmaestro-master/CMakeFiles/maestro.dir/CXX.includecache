@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/PWM/libmaestro-master/src/maestro.cpp
+maestro.h
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/PWM/libmaestro-master/src/maestro.h
+protocol.h
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/PWM/libmaestro-master/src/protocol.h
+
+include/maestro.h
+string
+-
+stdexcept
+-
+libusb-1.0/libusb.h
+-
+
+include/protocol.h
+
