@@ -1,0 +1,2 @@
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/CMakeFiles/maestro.dir
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/CMakeFiles/maestro-app.dir

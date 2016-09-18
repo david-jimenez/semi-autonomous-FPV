@@ -1,8 +1,10 @@
 #include <iostream>
 #include <cstdlib>
 #include <pthread.h>
+#include <stdio.h>
 #include "../include/server.h"
 #include "../include/multiwii.h"
+#include "../include/PWM.h"
 
 using namespace std;
 
@@ -18,16 +20,19 @@ void *server_worker_thread(void *arg){
 
 void *multiwii_worker_thread(void *arg){
 	printf("Started Multiwii thread\n");
-	multiwii Naze;
-	Naze.run();
+	//multiwii Naze;
+	//Naze.run();
 }
 
 void *mavlink_worker_thread(void *arg){
 	printf("Started Mavlink thread\n");
+	//TODO: Remember that the flow sensor is backwards on the rig. This must be handled in code
 }
 
 void *PWM_worker_thread(void *arg){
 	printf("Started PWM thread\n");
+	PWM foo;
+	foo.run();
 }
 
 void *control_worker_thread(void *arg){
