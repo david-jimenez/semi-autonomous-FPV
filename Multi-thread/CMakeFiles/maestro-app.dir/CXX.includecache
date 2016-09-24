@@ -7,20 +7,18 @@
 #IncludeRegexTransform: 
 
 /home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/PWM.h
-
-/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/msp.h
-mspdata.h
-/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/mspdata.h
-iosfwd
+vector
 -
 
-/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/mspdata.h
-stdint.h
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/maestro.h
+string
 -
-iosfwd
+stdexcept
+-
+libusb-1.0/libusb.h
 -
 
-/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/multiwii.h
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/source/PWM.cpp
 iostream
 -
 cstring
@@ -29,36 +27,8 @@ unistd.h
 -
 ctime
 -
-serial.h
-/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/serial.h
-msp.h
-/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/msp.h
-mspdata.h
-/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/mspdata.h
-
-/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/serial.h
-
-/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/server.h
-iostream
--
-cstdlib
--
-pthread.h
--
-
-/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/source/main.cpp
-iostream
--
-cstdlib
--
-pthread.h
--
-stdio.h
--
-../include/server.h
-/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/server.h
-../include/multiwii.h
-/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/multiwii.h
 ../include/PWM.h
 /home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/PWM.h
+../include/maestro.h
+/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/include/maestro.h
 

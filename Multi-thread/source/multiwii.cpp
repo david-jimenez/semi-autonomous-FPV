@@ -2,6 +2,11 @@
 #include <cstring>
 #include <unistd.h>
 #include <ctime>
+#include <string>
+#include <sstream>
+#include <vector>
+#include <stdio.h>
+#include <stdlib.h>
 
 #include "../include/serial.h"
 #include "../include/msp.h"
@@ -69,14 +74,50 @@ void multiwii::accCalTest(MSP& msp)
 }
 
 
-void multiwii::run()
+void multiwii::run(std::vector<int> *motVals)
 {
     Serial s("/dev/ttyUSB0");
+	//std::system("clear");
     MSP msp(s);
+	std::stringstream motorOut;
+	std::string motorString;
+	char * token;
+	int i = 0;
+	std::vector<std::string> tempMotor(8);
 	while(1){
 		//out<Attitude>(msp, std::cout);
 		//out<Altitude>(msp, std::cout);
-		out<Motor>(msp, std::cout);
+		out<Motor>(msp, motorOut);
+		motorString = motorOut.str();
+		i = 0;
+		while(i < 8 && getline(motorOut,tempMotor.at(i))){
+			i++;
+		}
+		//for(int j = 0;j < 4; j++){
+		//	std::cout << tempMotor.at(j) << std::endl;
+		//}
+		std::string tempString;
+		std::vector<std::string> tokens;
+		std::string item;
+		for(int j = 0;j < 4;j++){
+			tempString = tempMotor.at(j);
+			std::stringstream ss(tempString);
+			while(getline(ss,item,':')){
+				tokens.push_back(item);
+			}							
+		}
+		std::vector<int> motorVals(4);
+		for(int k = 0;k < 4;k++){
+			motorVals.at(k) = stoi(tokens.at(2*k + 1));
+			motVals->at(k) = motorVals.at(k);
+			//printf("%d\n",motorVals.at(k));
+		}
+		//std::cout << "\033[1;1H";
+		//std::cout << tokens.at(1) << std::endl;
+		//std::cout << tokens.at(3) << std::endl;
+		//std::cout << tokens.at(5) << std::endl;
+		//std::cout << tokens.at(7) << std::endl;
+		//std::cout << motorString;
 	}
 	/*
     out<Ident>(msp, std::cout);

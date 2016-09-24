@@ -19,7 +19,7 @@ class multiwii{
 	void out(MSP& msp, std::ostream& o);
 	virtual void rcTest(MSP& msp);
 	virtual void accCalTest(MSP& msp);
-	virtual void run();
+	virtual void run(std::vector<int> *motVals);
 };
 
 #endif
