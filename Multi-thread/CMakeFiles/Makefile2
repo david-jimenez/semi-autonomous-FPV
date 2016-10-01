@@ -88,38 +88,38 @@ clean: CMakeFiles/maestro.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/maestro-app.dir
+# Target rules for target CMakeFiles/run.dir
 
 # All Build rule for target.
-CMakeFiles/maestro-app.dir/all: CMakeFiles/maestro.dir/all
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/depend
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/CMakeFiles  2 3 4 5 6 7 8 9 10
-	@echo "Built target maestro-app"
-.PHONY : CMakeFiles/maestro-app.dir/all
+CMakeFiles/run.dir/all: CMakeFiles/maestro.dir/all
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/depend
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/build
+	$(CMAKE_COMMAND) -E cmake_progress_report /home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/CMakeFiles  2 3 4 5 6 7 8 9 10 11 12 13 14 15
+	@echo "Built target run"
+.PHONY : CMakeFiles/run.dir/all
 
 # Include target in all.
-all: CMakeFiles/maestro-app.dir/all
+all: CMakeFiles/run.dir/all
 .PHONY : all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/maestro-app.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/CMakeFiles 10
-	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/maestro-app.dir/all
+CMakeFiles/run.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/CMakeFiles 15
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/run.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread/CMakeFiles 0
-.PHONY : CMakeFiles/maestro-app.dir/rule
+.PHONY : CMakeFiles/run.dir/rule
 
 # Convenience name for target.
-maestro-app: CMakeFiles/maestro-app.dir/rule
-.PHONY : maestro-app
+run: CMakeFiles/run.dir/rule
+.PHONY : run
 
 # clean rule for target.
-CMakeFiles/maestro-app.dir/clean:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/clean
-.PHONY : CMakeFiles/maestro-app.dir/clean
+CMakeFiles/run.dir/clean:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/clean
+.PHONY : CMakeFiles/run.dir/clean
 
 # clean rule for target.
-clean: CMakeFiles/maestro-app.dir/clean
+clean: CMakeFiles/run.dir/clean
 .PHONY : clean
 
 #=============================================================================

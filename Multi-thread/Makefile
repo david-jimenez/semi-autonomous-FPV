@@ -157,24 +157,24 @@ maestro/fast:
 .PHONY : maestro/fast
 
 #=============================================================================
-# Target rules for targets named maestro-app
+# Target rules for targets named run
 
 # Build rule for target.
-maestro-app: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 maestro-app
-.PHONY : maestro-app
+run: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 run
+.PHONY : run
 
 # fast build rule for target.
-maestro-app/fast:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/build
-.PHONY : maestro-app/fast
+run/fast:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/build
+.PHONY : run/fast
 
 source/PWM.o: source/PWM.cpp.o
 .PHONY : source/PWM.o
 
 # target to build an object file
 source/PWM.cpp.o:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/PWM.cpp.o
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/PWM.cpp.o
 .PHONY : source/PWM.cpp.o
 
 source/PWM.i: source/PWM.cpp.i
@@ -182,7 +182,7 @@ source/PWM.i: source/PWM.cpp.i
 
 # target to preprocess a source file
 source/PWM.cpp.i:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/PWM.cpp.i
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/PWM.cpp.i
 .PHONY : source/PWM.cpp.i
 
 source/PWM.s: source/PWM.cpp.s
@@ -190,8 +190,80 @@ source/PWM.s: source/PWM.cpp.s
 
 # target to generate assembly for a file
 source/PWM.cpp.s:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/PWM.cpp.s
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/PWM.cpp.s
 .PHONY : source/PWM.cpp.s
+
+source/autopilot_interface.o: source/autopilot_interface.cpp.o
+.PHONY : source/autopilot_interface.o
+
+# target to build an object file
+source/autopilot_interface.cpp.o:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/autopilot_interface.cpp.o
+.PHONY : source/autopilot_interface.cpp.o
+
+source/autopilot_interface.i: source/autopilot_interface.cpp.i
+.PHONY : source/autopilot_interface.i
+
+# target to preprocess a source file
+source/autopilot_interface.cpp.i:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/autopilot_interface.cpp.i
+.PHONY : source/autopilot_interface.cpp.i
+
+source/autopilot_interface.s: source/autopilot_interface.cpp.s
+.PHONY : source/autopilot_interface.s
+
+# target to generate assembly for a file
+source/autopilot_interface.cpp.s:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/autopilot_interface.cpp.s
+.PHONY : source/autopilot_interface.cpp.s
+
+source/kalman.o: source/kalman.cpp.o
+.PHONY : source/kalman.o
+
+# target to build an object file
+source/kalman.cpp.o:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/kalman.cpp.o
+.PHONY : source/kalman.cpp.o
+
+source/kalman.i: source/kalman.cpp.i
+.PHONY : source/kalman.i
+
+# target to preprocess a source file
+source/kalman.cpp.i:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/kalman.cpp.i
+.PHONY : source/kalman.cpp.i
+
+source/kalman.s: source/kalman.cpp.s
+.PHONY : source/kalman.s
+
+# target to generate assembly for a file
+source/kalman.cpp.s:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/kalman.cpp.s
+.PHONY : source/kalman.cpp.s
+
+source/lqr.o: source/lqr.cpp.o
+.PHONY : source/lqr.o
+
+# target to build an object file
+source/lqr.cpp.o:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/lqr.cpp.o
+.PHONY : source/lqr.cpp.o
+
+source/lqr.i: source/lqr.cpp.i
+.PHONY : source/lqr.i
+
+# target to preprocess a source file
+source/lqr.cpp.i:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/lqr.cpp.i
+.PHONY : source/lqr.cpp.i
+
+source/lqr.s: source/lqr.cpp.s
+.PHONY : source/lqr.s
+
+# target to generate assembly for a file
+source/lqr.cpp.s:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/lqr.cpp.s
+.PHONY : source/lqr.cpp.s
 
 source/maestro.o: source/maestro.cpp.o
 .PHONY : source/maestro.o
@@ -199,7 +271,7 @@ source/maestro.o: source/maestro.cpp.o
 # target to build an object file
 source/maestro.cpp.o:
 	$(MAKE) -f CMakeFiles/maestro.dir/build.make CMakeFiles/maestro.dir/source/maestro.cpp.o
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/maestro.cpp.o
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/maestro.cpp.o
 .PHONY : source/maestro.cpp.o
 
 source/maestro.i: source/maestro.cpp.i
@@ -208,7 +280,7 @@ source/maestro.i: source/maestro.cpp.i
 # target to preprocess a source file
 source/maestro.cpp.i:
 	$(MAKE) -f CMakeFiles/maestro.dir/build.make CMakeFiles/maestro.dir/source/maestro.cpp.i
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/maestro.cpp.i
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/maestro.cpp.i
 .PHONY : source/maestro.cpp.i
 
 source/maestro.s: source/maestro.cpp.s
@@ -217,7 +289,7 @@ source/maestro.s: source/maestro.cpp.s
 # target to generate assembly for a file
 source/maestro.cpp.s:
 	$(MAKE) -f CMakeFiles/maestro.dir/build.make CMakeFiles/maestro.dir/source/maestro.cpp.s
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/maestro.cpp.s
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/maestro.cpp.s
 .PHONY : source/maestro.cpp.s
 
 source/main.o: source/main.cpp.o
@@ -225,7 +297,7 @@ source/main.o: source/main.cpp.o
 
 # target to build an object file
 source/main.cpp.o:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/main.cpp.o
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/main.cpp.o
 .PHONY : source/main.cpp.o
 
 source/main.i: source/main.cpp.i
@@ -233,7 +305,7 @@ source/main.i: source/main.cpp.i
 
 # target to preprocess a source file
 source/main.cpp.i:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/main.cpp.i
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/main.cpp.i
 .PHONY : source/main.cpp.i
 
 source/main.s: source/main.cpp.s
@@ -241,15 +313,39 @@ source/main.s: source/main.cpp.s
 
 # target to generate assembly for a file
 source/main.cpp.s:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/main.cpp.s
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/main.cpp.s
 .PHONY : source/main.cpp.s
+
+source/mavlink_control.o: source/mavlink_control.cpp.o
+.PHONY : source/mavlink_control.o
+
+# target to build an object file
+source/mavlink_control.cpp.o:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/mavlink_control.cpp.o
+.PHONY : source/mavlink_control.cpp.o
+
+source/mavlink_control.i: source/mavlink_control.cpp.i
+.PHONY : source/mavlink_control.i
+
+# target to preprocess a source file
+source/mavlink_control.cpp.i:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/mavlink_control.cpp.i
+.PHONY : source/mavlink_control.cpp.i
+
+source/mavlink_control.s: source/mavlink_control.cpp.s
+.PHONY : source/mavlink_control.s
+
+# target to generate assembly for a file
+source/mavlink_control.cpp.s:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/mavlink_control.cpp.s
+.PHONY : source/mavlink_control.cpp.s
 
 source/msp.o: source/msp.cpp.o
 .PHONY : source/msp.o
 
 # target to build an object file
 source/msp.cpp.o:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/msp.cpp.o
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/msp.cpp.o
 .PHONY : source/msp.cpp.o
 
 source/msp.i: source/msp.cpp.i
@@ -257,7 +353,7 @@ source/msp.i: source/msp.cpp.i
 
 # target to preprocess a source file
 source/msp.cpp.i:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/msp.cpp.i
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/msp.cpp.i
 .PHONY : source/msp.cpp.i
 
 source/msp.s: source/msp.cpp.s
@@ -265,7 +361,7 @@ source/msp.s: source/msp.cpp.s
 
 # target to generate assembly for a file
 source/msp.cpp.s:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/msp.cpp.s
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/msp.cpp.s
 .PHONY : source/msp.cpp.s
 
 source/mspdata.o: source/mspdata.cpp.o
@@ -273,7 +369,7 @@ source/mspdata.o: source/mspdata.cpp.o
 
 # target to build an object file
 source/mspdata.cpp.o:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/mspdata.cpp.o
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/mspdata.cpp.o
 .PHONY : source/mspdata.cpp.o
 
 source/mspdata.i: source/mspdata.cpp.i
@@ -281,7 +377,7 @@ source/mspdata.i: source/mspdata.cpp.i
 
 # target to preprocess a source file
 source/mspdata.cpp.i:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/mspdata.cpp.i
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/mspdata.cpp.i
 .PHONY : source/mspdata.cpp.i
 
 source/mspdata.s: source/mspdata.cpp.s
@@ -289,7 +385,7 @@ source/mspdata.s: source/mspdata.cpp.s
 
 # target to generate assembly for a file
 source/mspdata.cpp.s:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/mspdata.cpp.s
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/mspdata.cpp.s
 .PHONY : source/mspdata.cpp.s
 
 source/multiwii.o: source/multiwii.cpp.o
@@ -297,7 +393,7 @@ source/multiwii.o: source/multiwii.cpp.o
 
 # target to build an object file
 source/multiwii.cpp.o:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/multiwii.cpp.o
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/multiwii.cpp.o
 .PHONY : source/multiwii.cpp.o
 
 source/multiwii.i: source/multiwii.cpp.i
@@ -305,7 +401,7 @@ source/multiwii.i: source/multiwii.cpp.i
 
 # target to preprocess a source file
 source/multiwii.cpp.i:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/multiwii.cpp.i
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/multiwii.cpp.i
 .PHONY : source/multiwii.cpp.i
 
 source/multiwii.s: source/multiwii.cpp.s
@@ -313,7 +409,7 @@ source/multiwii.s: source/multiwii.cpp.s
 
 # target to generate assembly for a file
 source/multiwii.cpp.s:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/multiwii.cpp.s
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/multiwii.cpp.s
 .PHONY : source/multiwii.cpp.s
 
 source/serial.o: source/serial.cpp.o
@@ -321,7 +417,7 @@ source/serial.o: source/serial.cpp.o
 
 # target to build an object file
 source/serial.cpp.o:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/serial.cpp.o
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/serial.cpp.o
 .PHONY : source/serial.cpp.o
 
 source/serial.i: source/serial.cpp.i
@@ -329,7 +425,7 @@ source/serial.i: source/serial.cpp.i
 
 # target to preprocess a source file
 source/serial.cpp.i:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/serial.cpp.i
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/serial.cpp.i
 .PHONY : source/serial.cpp.i
 
 source/serial.s: source/serial.cpp.s
@@ -337,15 +433,39 @@ source/serial.s: source/serial.cpp.s
 
 # target to generate assembly for a file
 source/serial.cpp.s:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/serial.cpp.s
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/serial.cpp.s
 .PHONY : source/serial.cpp.s
+
+source/serial_port.o: source/serial_port.cpp.o
+.PHONY : source/serial_port.o
+
+# target to build an object file
+source/serial_port.cpp.o:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/serial_port.cpp.o
+.PHONY : source/serial_port.cpp.o
+
+source/serial_port.i: source/serial_port.cpp.i
+.PHONY : source/serial_port.i
+
+# target to preprocess a source file
+source/serial_port.cpp.i:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/serial_port.cpp.i
+.PHONY : source/serial_port.cpp.i
+
+source/serial_port.s: source/serial_port.cpp.s
+.PHONY : source/serial_port.s
+
+# target to generate assembly for a file
+source/serial_port.cpp.s:
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/serial_port.cpp.s
+.PHONY : source/serial_port.cpp.s
 
 source/server.o: source/server.cpp.o
 .PHONY : source/server.o
 
 # target to build an object file
 source/server.cpp.o:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/server.cpp.o
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/server.cpp.o
 .PHONY : source/server.cpp.o
 
 source/server.i: source/server.cpp.i
@@ -353,7 +473,7 @@ source/server.i: source/server.cpp.i
 
 # target to preprocess a source file
 source/server.cpp.i:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/server.cpp.i
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/server.cpp.i
 .PHONY : source/server.cpp.i
 
 source/server.s: source/server.cpp.s
@@ -361,7 +481,7 @@ source/server.s: source/server.cpp.s
 
 # target to generate assembly for a file
 source/server.cpp.s:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/server.cpp.s
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/server.cpp.s
 .PHONY : source/server.cpp.s
 
 source/testThread.o: source/testThread.cpp.o
@@ -369,7 +489,7 @@ source/testThread.o: source/testThread.cpp.o
 
 # target to build an object file
 source/testThread.cpp.o:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/testThread.cpp.o
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/testThread.cpp.o
 .PHONY : source/testThread.cpp.o
 
 source/testThread.i: source/testThread.cpp.i
@@ -377,7 +497,7 @@ source/testThread.i: source/testThread.cpp.i
 
 # target to preprocess a source file
 source/testThread.cpp.i:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/testThread.cpp.i
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/testThread.cpp.i
 .PHONY : source/testThread.cpp.i
 
 source/testThread.s: source/testThread.cpp.s
@@ -385,7 +505,7 @@ source/testThread.s: source/testThread.cpp.s
 
 # target to generate assembly for a file
 source/testThread.cpp.s:
-	$(MAKE) -f CMakeFiles/maestro-app.dir/build.make CMakeFiles/maestro-app.dir/source/testThread.cpp.s
+	$(MAKE) -f CMakeFiles/run.dir/build.make CMakeFiles/run.dir/source/testThread.cpp.s
 .PHONY : source/testThread.cpp.s
 
 # Help Target
@@ -400,17 +520,29 @@ help:
 	@echo "... install/strip"
 	@echo "... list_install_components"
 	@echo "... maestro"
-	@echo "... maestro-app"
 	@echo "... rebuild_cache"
+	@echo "... run"
 	@echo "... source/PWM.o"
 	@echo "... source/PWM.i"
 	@echo "... source/PWM.s"
+	@echo "... source/autopilot_interface.o"
+	@echo "... source/autopilot_interface.i"
+	@echo "... source/autopilot_interface.s"
+	@echo "... source/kalman.o"
+	@echo "... source/kalman.i"
+	@echo "... source/kalman.s"
+	@echo "... source/lqr.o"
+	@echo "... source/lqr.i"
+	@echo "... source/lqr.s"
 	@echo "... source/maestro.o"
 	@echo "... source/maestro.i"
 	@echo "... source/maestro.s"
 	@echo "... source/main.o"
 	@echo "... source/main.i"
 	@echo "... source/main.s"
+	@echo "... source/mavlink_control.o"
+	@echo "... source/mavlink_control.i"
+	@echo "... source/mavlink_control.s"
 	@echo "... source/msp.o"
 	@echo "... source/msp.i"
 	@echo "... source/msp.s"
@@ -423,6 +555,9 @@ help:
 	@echo "... source/serial.o"
 	@echo "... source/serial.i"
 	@echo "... source/serial.s"
+	@echo "... source/serial_port.o"
+	@echo "... source/serial_port.i"
+	@echo "... source/serial_port.s"
 	@echo "... source/server.o"
 	@echo "... source/server.i"
 	@echo "... source/server.s"

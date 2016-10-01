@@ -1,0 +1,2 @@
+/usr/bin/ar cr liblapack.a  CMakeFiles/lapack.dir/source/lqr.cpp.o
+/usr/bin/ranlib liblapack.a

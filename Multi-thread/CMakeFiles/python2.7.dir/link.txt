@@ -1,0 +1,2 @@
+/usr/bin/ar cr libpython2.7.a  CMakeFiles/python2.7.dir/source/lqr.cpp.o
+/usr/bin/ranlib libpython2.7.a

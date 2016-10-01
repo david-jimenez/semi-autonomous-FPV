@@ -1,0 +1,2 @@
+/usr/bin/ar cr libArmadillo.a  CMakeFiles/Armadillo.dir/source/lqr.cpp.o CMakeFiles/Armadillo.dir/source/kalman.cpp.o
+/usr/bin/ranlib libArmadillo.a

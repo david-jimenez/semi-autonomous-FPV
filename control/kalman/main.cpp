@@ -10,9 +10,15 @@
 #include <octave/octave.h>
 #include <octave/parse.h>
 #include <octave/toplev.h>
-#include <octave/builtin-defun-decls.h>
 
 float a,b,m,l,r,Ixx,Iyy,Izz,T1,T2,T3,T4;
+Matrix a_matrix;
+Matrix b_matrix;
+Matrix q_matrix;
+Matrix r_matrix;
+Matrix k_matrix;
+octave_value_list in;
+octave_value_list out;
 
 #define g 9.8
 #define M_PI 3.14159265358979323846
@@ -76,6 +82,11 @@ void setMatrices(arma::mat *A,arma::mat *B,arma::mat *C){
     A->at(11,14) = (l/Ixx)*r;
     A->at(11,15) = (-l/Ixx)*r;
 
+	A->at(13,13) = -10;
+	A->at(13,13) = -10;
+	A->at(13,13) = -10;
+	A->at(13,13) = -10;
+
     B->at(12,0) = 1.5;
     B->at(13,1) = 1.5;
     B->at(14,2) = 1.5;
@@ -117,7 +128,7 @@ void computePrediction(arma::mat *xp, arma::mat *xc, arma::mat *y,
 
 }
 
-void lqrold(arma::mat *A, arma::mat *B, arma::mat *Q, arma::mat *R){
+/*void lqrold(arma::mat *A, arma::mat *B, arma::mat *Q, arma::mat *R){
 
 	//A->print("A");
 	//B->print("B");
@@ -143,37 +154,91 @@ void lqrold(arma::mat *A, arma::mat *B, arma::mat *Q, arma::mat *R){
 				mut.at(i,j) = 0;
 			}
 		}
-	}*/
+	}
 	arma::mat U;
 	arma::mat S;
 	schur(S,H);
 	S.print("S");
 
-}
+}*/
 
-void lqr(arma::mat *A, arma::mat *B, arma::mat *Q, arma::mat *R){
+
+void computeControl(arma::mat *xp, arma::mat *xc, arma::mat *y,
+                       arma::mat *A,  arma::mat *B, arma::mat *C,
+                       arma::mat *P, arma::mat *p, arma::mat *K,
+                       arma::mat *Q, arma::mat *R, arma::mat *eye,
+					   arma::mat *u){
 	
-	int n = 2;
-	Matrix a_matrix = Matrix(n,n);
-	for(octave_idx_type i = 0; i < n ; i++){
-		for(octave_idx_type j = 0; j < n ; j++){
-			a_matrix(i,j) = (i + 1)*10 + (j+1);
-		}
-	}
-	std::cout << "Matrix:" << std::endl << a_matrix << std::endl;
-	octave_value_list in;
-	in(0) = a_matrix;
+	//std::cout << "test" << std::endl;
+	//clock_t begin = clock();
 
-	octave_value_list out = Fnorm(in,1);
-	double norm_of_the_matrix = out(0).double_value();
-	std::cout << "Norm:" << std::endl << norm_of_the_matrix << std::endl;
+	for(octave_idx_type i = 0; i < 16; i++){
+		for(octave_idx_type j = 0; j < 16; j++){
+			a_matrix(i,j) = A->at(i,j);
+		}	
+	}
+	
+	//clock_t end = clock();
+	//double elapsed_secs = double(end - begin)/CLOCKS_PER_SEC;
+	//std::cout << elapsed_secs << std::endl;	
+	//begin = clock();
+
+	for(octave_idx_type i = 0; i < 16; i++){
+		for(octave_idx_type j = 0; j < 4; j++){
+			b_matrix(i,j) = B->at(i,j);
+		}	
+	}
+
+	//end = clock();
+	//elapsed_secs = double(end - begin)/CLOCKS_PER_SEC;
+	//std::cout << elapsed_secs << std::endl;	
+	//begin = clock();
+	
+	in(0) = a_matrix;
+	in(1) = b_matrix;
+	in(2) = q_matrix;
+	in(3) = r_matrix;
+	//std::cout << "test" << std::endl;
+	out = feval("runLqr",in,1);
+	//std::cout << "test2" << std::endl;
+	k_matrix = out(0).matrix_value();
+	
+	//end = clock();
+	//elapsed_secs = double(end - begin)/CLOCKS_PER_SEC;
+	//std::cout << elapsed_secs << std::endl;	
+	//begin = clock();
+
+	for(octave_idx_type i = 0; i < 4; i++){
+		for(octave_idx_type j = 0; j < 16; j++){
+			K->at(i,j) = k_matrix(i,j);
+		}	
+	}
+
+	//end = clock();
+	//elapsed_secs = double(end - begin)/CLOCKS_PER_SEC;
+	//std::cout << elapsed_secs << std::endl;	
+
+	//std::cout << "test" << std::endl;
+	
 
 }
 
 int main(int argc, char *argv[])
 {
-	a = 30;
-	b = 30;    
+
+	string_vector arg(2);
+  	arg(0) = "";
+  	arg(1) = "--silent";
+	octave_main (2, arg.c_str_vec (), 1);	
+
+	a_matrix = Matrix(16,16);
+	b_matrix = Matrix(16,4);	
+	q_matrix = Matrix(16,16);
+	r_matrix = Matrix(4,4);	
+	
+
+	a = 0;
+	b = 0;    
 	a = M_PI*a/180;
     b = M_PI*b/180;
     m = 0.62;
@@ -182,48 +247,79 @@ int main(int argc, char *argv[])
     Ixx = 3.02*pow(10,-3);
     Iyy = 3.02*pow(10,-3);
     Izz = 3.02*pow(10,-3);
-    T1 = 1.519;
-    T2 = 1.519;
-    T3 = 1.519;
-    T4 = 1.519;
+    T1 = 0.01;
+    T2 = 0.01;
+    T3 = 0.01;
+    T4 = 0.01;
     arma::mat A(16,16,arma::fill::zeros);
     arma::mat B(16,4,arma::fill::zeros);
     arma::mat C(16,16,arma::fill::zeros);
     arma::mat xc(16,1,arma::fill::zeros);
     arma::mat xd(16,1,arma::fill::zeros);
     arma::mat xp(16,1,arma::fill::zeros);
-	arma::mat u(4,1,arma::fill::zeros);
-    arma::mat yt(16,2,arma::fill::zeros);
+	//arma::mat u(4,1,arma::fill::zeros);
+	arma::mat u;    
+	arma::mat yt(16,2,arma::fill::zeros);
     arma::mat R(16,16,arma::fill::eye);
     arma::mat Q(16,16,arma::fill::eye);
     arma::mat P(16,16,arma::fill::eye);
     arma::mat p(16,16,arma::fill::eye);
     arma::mat eye(16,16,arma::fill::eye);
 	arma::mat y;
-    arma::mat K;
+    arma::mat K(4,16,arma::fill::zeros);
     arma::mat x;
+
+	for(octave_idx_type i = 0; i < 16; i++){
+		for(octave_idx_type j = 0; j < 16; j++){
+			q_matrix(i,j) = Q.at(i,j);
+		}	
+	}
+
+	for(octave_idx_type i = 0; i < 4; i++){
+		for(octave_idx_type j = 0; j < 4; j++){
+			r_matrix(i,j) = R.at(i,j);
+		}	
+	}
 
     setMatrices(&A,&B,&C);
 	xc.at(6) = 0;
 	xc.at(7) = 0;
-	xc.at(8) = 5;
+	xc.at(8) = 0;
 	xc.at(12) = T1;
 	xc.at(13) = T2;
 	xc.at(14) = T3;
 	xc.at(15) = T4;
 
-	u.at(0) = 1;
-	u.at(1) = 1;
-	u.at(2) = 1;
-	u.at(3) = 1;
+	xd = xc;
+	xd.at(2) = 1;
 
+	//u.at(0) = 1;
+	//u.at(1) = 1;
+	//u.at(2) = 1;
+	//u.at(3) = 1;
+
+	double elapsed_secs; 
 	clock_t begin = clock();
-	lqr(&A,&B,&Q,&R);
-    computePrediction(&xp,&xc,&y,&A,&B,&C,&P,&p,&K,&Q,&R,&eye,&u);	
+	//A.print("A");
+	//B.print("B");
+	//Q.print("Q");
+	//R.print("R");
+    //computePrediction(&xp,&xc,&y,&A,&B,&C,&P,&p,&K,&Q,&R,&eye,&u);
+	xc.print("xc");
+	computeControl(&xp,&xc,&y,&A,&B,&C,&P,&p,&K,&Q,&R,&eye,&u);	
 	clock_t end = clock();
-	double elapsed_secs = double(end - begin)/CLOCKS_PER_SEC;
-	printf("%f",elapsed_secs);	
-
+	elapsed_secs = double(end - begin)/CLOCKS_PER_SEC;
+	std::cout << elapsed_secs << std::endl;
+	//printf("%f",elapsed_secs);	
+	u = -K * (xc-xd);
+	u.print("u");
+	computePrediction(&xp,&xc,&y,&A,&B,&C,&P,&p,&K,&Q,&R,&eye,&u);
+	xp.print("xp");
+	xc = xp;
+	computeControl(&xp,&xc,&y,&A,&B,&C,&P,&p,&K,&Q,&R,&eye,&u);
+	u.print("u2");
+	computePrediction(&xp,&xc,&y,&A,&B,&C,&P,&p,&K,&Q,&R,&eye,&u);
+	xp.print("xp2:");
     /*A.print("A:");
     B.print("B:");
     C.print("C:");

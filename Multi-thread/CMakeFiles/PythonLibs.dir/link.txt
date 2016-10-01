@@ -1,0 +1,2 @@
+/usr/bin/ar cr libPythonLibs.a  CMakeFiles/PythonLibs.dir/source/lqr.cpp.o
+/usr/bin/ranlib libPythonLibs.a

@@ -14,6 +14,15 @@
 # EXTERNAL cache entries
 ########################
 
+//Path to a file.
+ARMADILLO_INCLUDE_DIR:PATH=/usr/include
+
+//Path to a library.
+ARMADILLO_LIBRARY:FILEPATH=/usr/lib/libarmadillo.so
+
+//Dependencies for the target
+Armadillo_LIB_DEPENDS:STATIC=general;/usr/lib/libarmadillo.so;
+
 //Path to a program.
 CMAKE_AR:FILEPATH=/usr/bin/ar
 
@@ -180,14 +189,51 @@ LibMaestro_BINARY_DIR:STATIC=/home/odroid/Documents/Thesis/semi-autonomous-FPV/M
 //Value Computed by CMake
 LibMaestro_SOURCE_DIR:STATIC=/home/odroid/Documents/Thesis/semi-autonomous-FPV/Multi-thread
 
+//Path to a file.
+PYTHON_INCLUDE_DIR:PATH=/usr/include/python2.7
+
+//Path to a library.
+PYTHON_LIBRARY:FILEPATH=/usr/lib/arm-linux-gnueabihf/libpython2.7.so
+
+//Path to a library.
+PYTHON_LIBRARY_DEBUG:FILEPATH=PYTHON_LIBRARY_DEBUG-NOTFOUND
+
+//Dependencies for target
+PythonLibs_LIB_DEPENDS:STATIC=
+
+//The directory containing a CMake configuration file for Python.
+Python_DIR:PATH=Python_DIR-NOTFOUND
+
+//Dependencies for target
+armadillo_LIB_DEPENDS:STATIC=
+
+//Dependencies for target
+blas_LIB_DEPENDS:STATIC=
+
+//The directory containing a CMake configuration file for lapack.
+lapack_DIR:PATH=lapack_DIR-NOTFOUND
+
+//Dependencies for target
+lapack_LIB_DEPENDS:STATIC=
+
 //Dependencies for the target
 maestro_LIB_DEPENDS:STATIC=general;/usr/lib/arm-linux-gnueabihf/libusb-1.0.so;
+
+//The directory containing a CMake configuration file for python2.7.
+python2.7_DIR:PATH=python2.7_DIR-NOTFOUND
+
+//Dependencies for target
+python2.7_LIB_DEPENDS:STATIC=
 
 
 ########################
 # INTERNAL cache entries
 ########################
 
+//ADVANCED property for variable: ARMADILLO_INCLUDE_DIR
+ARMADILLO_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: ARMADILLO_LIBRARY
+ARMADILLO_LIBRARY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
 CMAKE_AR-ADVANCED:INTERNAL=1
 //This is the directory where this CMakeCache.txt was created
@@ -321,6 +367,16 @@ CMAKE_UNAME:INTERNAL=/bin/uname
 CMAKE_USE_RELATIVE_PATHS-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_VERBOSE_MAKEFILE
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
+//Details about finding Armadillo
+FIND_PACKAGE_MESSAGE_DETAILS_Armadillo:INTERNAL=[/usr/lib/libarmadillo.so][/usr/include][v7.400.2()]
+//Details about finding PythonLibs
+FIND_PACKAGE_MESSAGE_DETAILS_PythonLibs:INTERNAL=[/usr/lib/arm-linux-gnueabihf/libpython2.7.so][/usr/include/python2.7][v2.7.9(2.7)]
 //Details about finding Threads
 FIND_PACKAGE_MESSAGE_DETAILS_Threads:INTERNAL=[TRUE][v()]
+//ADVANCED property for variable: PYTHON_INCLUDE_DIR
+PYTHON_INCLUDE_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: PYTHON_LIBRARY
+PYTHON_LIBRARY-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: PYTHON_LIBRARY_DEBUG
+PYTHON_LIBRARY_DEBUG-ADVANCED:INTERNAL=1
 
