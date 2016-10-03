@@ -5,12 +5,13 @@
 #include <string.h>
 #include <stdio.h>
 #include <armadillo>
+#include <vector>
 #include <ctime>
 
 class kalman{
 	public:
 	kalman();
-	void run();
+	void run(std::vector<double> *stateSpace);
 	void computePrediction(arma::mat *xp, arma::mat *xc, arma::mat *y,
                        arma::mat *A,  arma::mat *B, arma::mat *C,
                        arma::mat *P, arma::mat *p, arma::mat *K,
@@ -18,6 +19,6 @@ class kalman{
 					   arma::mat *u);
 	void setAMatrix(arma::mat *A);
 	void setMatrices(arma::mat *A,arma::mat *B,arma::mat *C);
-	float a,b,m,l,r,Ixx,Iyy,Izz,T1,T2,T3,T4;
+	float a,b,c,m,l,r,Ixx,Iyy,Izz,T1,T2,T3,T4;
 
 };

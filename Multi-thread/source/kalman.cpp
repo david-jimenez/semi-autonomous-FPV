@@ -22,21 +22,37 @@ kalman::kalman(){
 
 void kalman::setAMatrix(arma::mat *A){
 
-    A->at(6,3) = cos(a)*((T1/m)+(T2/m)+(T3/m)+(T4/m));
-    A->at(6,12) = sin(a)/m;
-    A->at(6,13) = sin(a)/m;
-    A->at(6,14) = sin(a)/m;
-    A->at(6,15) = sin(a)/m;
-    A->at(7,4) = cos(b)*((T1/m)+(T2/m)+(T3/m)+(T4/m));
-    A->at(7,12) = sin(b)/m;
-    A->at(7,13) = sin(b)/m;
-    A->at(7,14) = sin(b)/m;
-    A->at(7,15) = sin(b)/m;
-    A->at(8,3) = (-sin(a)*(T1+T2+T3+T4))/m;
-    A->at(8,12) = cos(a)/m;
-    A->at(8,13) = cos(a)/m;
-    A->at(8,14) = cos(a)/m;
-    A->at(8,15) = cos(a)/m;
+    if(a == 0){a += 0.0001;}
+	if(b == 0){b += 0.0001;}
+	if(c == 0){c += 0.0001;}
+	if(a == M_PI/2){a += 0.0001;}
+	if(b == M_PI/2){b += 0.0001;}
+	if(c == M_PI/2){c += 0.0001;}
+	if(a == M_PI){a += 0.0001;}
+	if(b == M_PI){b += 0.0001;}
+	if(c == M_PI){c += 0.0001;}
+	if(a == 3*M_PI/2){a += 0.0001;}
+	if(b == 3*M_PI/2){b += 0.0001;}
+	if(c == 3*M_PI/2){c += 0.0001;}
+
+    A->at(6,3) = sin(c)*cos(a)*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+	A->at(6,5) = cos(c)*sin(a)*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+    A->at(6,12) = (sin(a)*sin(c))/m;
+    A->at(6,13) = (sin(a)*sin(c))/m;
+    A->at(6,14) = (sin(a)*sin(c))/m;
+    A->at(6,15) = (sin(a)*sin(c))/m;
+    A->at(7,4) = cos(c)*cos(b)*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+	A->at(7,5) = -sin(c)*sin(b)*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+    A->at(7,12) = (cos(c)*sin(b))/m;
+    A->at(7,13) = (cos(c)*sin(b))/m;
+    A->at(7,14) = (cos(c)*sin(b))/m;
+    A->at(7,15) = (cos(c)*sin(b))/m;
+    A->at(8,3) = (-sin(a)*cos(b)*(T1+T2+T3+T4))/m;
+	A->at(8,4) = (-cos(a)*sin(b)*(T1+T2+T3+T4))/m;
+    A->at(8,12) = (cos(a)*cos(b))/m;
+    A->at(8,13) = (cos(a)*cos(b))/m;
+    A->at(8,14) = (cos(a)*cos(b))/m;
+    A->at(8,15) = (cos(a)*cos(b))/m;
 
 }
 
@@ -47,7 +63,7 @@ void kalman::setMatrices(arma::mat *A,arma::mat *B,arma::mat *C){
     A->at(3,9) = 1;
     A->at(4,10) = 1;
     A->at(5,11) = 1;
-    A->at(6,3) = cos(a)*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+    /*A->at(6,3) = cos(a)*((T1/m)+(T2/m)+(T3/m)+(T4/m));
     A->at(6,12) = sin(a)/m;
     A->at(6,13) = sin(a)/m;
     A->at(6,14) = sin(a)/m;
@@ -61,7 +77,7 @@ void kalman::setMatrices(arma::mat *A,arma::mat *B,arma::mat *C){
     A->at(8,12) = cos(a)/m;
     A->at(8,13) = cos(a)/m;
     A->at(8,14) = cos(a)/m;
-    A->at(8,15) = cos(a)/m;
+    A->at(8,15) = cos(a)/m;*/
 
     A->at(9,12) = l/Ixx;
     A->at(9,13) = l/Ixx;
@@ -119,7 +135,7 @@ void kalman::computePrediction(arma::mat *xp, arma::mat *xc, arma::mat *y,
 
 }
 
-void kalman::run()
+void kalman::run(std::vector<double> *stateSpace)
 {
 	a = 30;
 	b = 30;    
@@ -153,6 +169,7 @@ void kalman::run()
     arma::mat x;
 
     setMatrices(&A,&B,&C);
+	setAMatrix(&A);
 	xc.at(6) = 0;
 	xc.at(7) = 0;
 	xc.at(8) = 5;
