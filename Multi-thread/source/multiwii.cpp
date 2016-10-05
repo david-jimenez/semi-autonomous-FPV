@@ -74,28 +74,28 @@ void multiwii::accCalTest(MSP& msp)
 }
 
 
-void multiwii::run(std::vector<int> *motVals)
+void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std::vector<int> *aux)
 {
     Serial s("/dev/ttyUSB0");
 	//std::system("clear");
     MSP msp(s);
-	std::stringstream motorOut;
-	std::string motorString;
+	std::stringstream motorOut, attOut, auxOut;
+	std::string motorString, attString, auxString;
+	std::vector<int> motorVals(4);
+	std::vector<float> att(3);
+	std::vector<int> auxVec(4);
 	char * token;
 	int i = 0;
 	std::vector<std::string> tempMotor(8);
+	std::vector<std::string> tempAtt(6);
+	std::vector<std::string> tempAux(16);
 	while(1){
-		//out<Attitude>(msp, std::cout);
-		//out<Altitude>(msp, std::cout);
 		out<Motor>(msp, motorOut);
 		motorString = motorOut.str();
 		i = 0;
 		while(i < 8 && getline(motorOut,tempMotor.at(i))){
 			i++;
 		}
-		//for(int j = 0;j < 4; j++){
-		//	std::cout << tempMotor.at(j) << std::endl;
-		//}
 		std::string tempString;
 		std::vector<std::string> tokens;
 		std::string item;
@@ -106,27 +106,65 @@ void multiwii::run(std::vector<int> *motVals)
 				tokens.push_back(item);
 			}							
 		}
-		std::vector<int> motorVals(4);
 		for(int k = 0;k < 4;k++){
 			motorVals.at(k) = stoi(tokens.at(2*k + 1));
 			motVals->at(k) = motorVals.at(k);
-			//printf("%d\n",motorVals.at(k));
 		}
-		//std::cout << "\033[1;1H";
-		//std::cout << tokens.at(1) << std::endl;
-		//std::cout << tokens.at(3) << std::endl;
-		//std::cout << tokens.at(5) << std::endl;
-		//std::cout << tokens.at(7) << std::endl;
-		//std::cout << motorString;
+/* -----------------------------------------------------------*/
+		out<Attitude>(msp, attOut);
+		attString = attOut.str();
+		i = 0;
+		while(i < 3 && getline(attOut, tempAtt.at(i))){
+			i++;
+		}
+		tempString.clear();
+		tokens.clear();
+		item.clear();
+		for(int j = 0;j < 3;j++){
+			tempString = tempAtt.at(j);
+			std::stringstream ss(tempString);
+			while(getline(ss,item,':')){
+				tokens.push_back(item);
+			}
+		}
+		for(int k = 0;k < 3;k++){
+			att.at(k) = (float) stod(tokens.at(2*k + 1));
+		}
+		attitude->at(0) = att.at(0)/10;
+		attitude->at(1) = att.at(1)/10;
+		attitude->at(2) = att.at(2);
+//---------------------------------------------------------------//
+		out<RC>(msp, auxOut);
+		auxString = auxOut.str();
+		i = 0;
+		while(i < 8 && getline(auxOut, tempAux.at(i))){
+			i++;
+		}
+		tempString.clear();
+		tokens.clear();
+		item.clear();
+		for(int j = 0; j < 16; j++){
+			tempString = tempAux.at(j);
+			std::stringstream ss(tempString);
+			while(getline(ss,item,':')){
+				tokens.push_back(item);
+			}
+		}
+		for(int k = 0; k < 4; k++){
+			auxVec.at(k) = stoi(tokens.at(2*k + 9));
+			aux->at(k) = auxVec.at(k);
+		}
 	}
-	/*
-    out<Ident>(msp, std::cout);
+	//out<RC>(msp, std::cout);
+	//out<Attitude>(msp, std::cout);
+	//out<Altitude>(msp, std::cout);
+    /*out<Ident>(msp, std::cout);
     //accCalTest(msp);
     out<Status>(msp, std::cout);
     out<RawIMU>(msp, std::cout);
     out<Servo>(msp, std::cout);
     out<Motor>(msp, std::cout);
-    out<RC>(msp, std::cout);
+
     //rcTest(msp);
     out<Attitude>(msp, std::cout);
     out<Altitude>(msp, std::cout);

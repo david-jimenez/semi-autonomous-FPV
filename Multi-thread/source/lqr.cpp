@@ -32,24 +32,59 @@ void lqr::setAMatrix(arma::mat *A){
 	if(b == 3*M_PI/2){b += 0.0001;}
 	if(c == 3*M_PI/2){c += 0.0001;}
 
-    A->at(6,3) = sin(c)*cos(a)*((T1/m)+(T2/m)+(T3/m)+(T4/m));
-	A->at(6,5) = cos(c)*sin(a)*((T1/m)+(T2/m)+(T3/m)+(T4/m));
-    A->at(6,12) = (sin(a)*sin(c))/m;
-    A->at(6,13) = (sin(a)*sin(c))/m;
-    A->at(6,14) = (sin(a)*sin(c))/m;
-    A->at(6,15) = (sin(a)*sin(c))/m;
-    A->at(7,4) = cos(c)*cos(b)*((T1/m)+(T2/m)+(T3/m)+(T4/m));
-	A->at(7,5) = -sin(c)*sin(b)*((T1/m)+(T2/m)+(T3/m)+(T4/m));
-    A->at(7,12) = (cos(c)*sin(b))/m;
-    A->at(7,13) = (cos(c)*sin(b))/m;
-    A->at(7,14) = (cos(c)*sin(b))/m;
-    A->at(7,15) = (cos(c)*sin(b))/m;
+    /*A->at(6,3) = (-cos(a)*cos(b)*cos(c))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+	A->at(6,4) = (cos(b)*sin(c)+cos(c)*sin(a)*sin(b))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+	A->at(6,5) = (sin(b)*cos(c)+cos(b)*sin(a)*sin(c))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+    A->at(6,12) = (sin(b)*sin(c)-cos(b)*cos(c)*sin(a))/m;
+    A->at(6,13) = A->at(6,12);
+    A->at(6,14) = A->at(6,12);
+    A->at(6,15) = A->at(6,12);
+    A->at(7,3) = (-cos(a)*cos(b)*sin(c))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+	A->at(7,4) = -(cos(b)*cos(c)-sin(a)*sin(b)*sin(c))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+	A->at(7,5) = (sin(b)*sin(c)-cos(b)*cos(c)*sin(a))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+    A->at(7,12) = -(cos(c)*sin(b)-cos(b)*sin(a)*sin(c))/m;
+    A->at(7,13) = A->at(7,12);
+    A->at(7,14) = A->at(7,12);
+    A->at(7,15) = A->at(7,12);
+    A->at(8,3) = (-sin(a)*sin(b)*(T1+T2+T3+T4))/m;
+	A->at(8,4) = (cos(a)*cos(b)*(T1+T2+T3+T4))/m;
+    A->at(8,12) = (cos(a)*sin(b))/m;
+    A->at(8,13) = A->at(8,12);
+    A->at(8,14) = A->at(8,12);
+    A->at(8,15) = A->at(8,12);*/
+
+	A->at(6,3) = (cos(a)*sin(c) - cos(c)*sin(a)*sin(b))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+	A->at(6,4) = (cos(a)*cos(b)*cos(c))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+	A->at(6,5) = (cos(c)*sin(a)-cos(a)*sin(b)*sin(c))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+    A->at(6,12) = (sin(a)*sin(c)+cos(a)*cos(c)*sin(b))/m;
+    A->at(6,13) = A->at(6,12);
+    A->at(6,14) = A->at(6,12);
+    A->at(6,15) = A->at(6,12);
+    A->at(7,3) = -(cos(a)*cos(c) + sin(a)*sin(b)*sin(c))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+	A->at(7,4) = (cos(a)*cos(b)*sin(c))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+	A->at(7,5) = (sin(a)*sin(c)+cos(a)*cos(c)*sin(b))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
+    A->at(7,12) = (cos(a)*sin(b)*sin(c)-cos(c)*sin(a))/m;
+    A->at(7,13) = A->at(7,12);
+    A->at(7,14) = A->at(7,12);
+    A->at(7,15) = A->at(7,12);
     A->at(8,3) = (-sin(a)*cos(b)*(T1+T2+T3+T4))/m;
 	A->at(8,4) = (-cos(a)*sin(b)*(T1+T2+T3+T4))/m;
     A->at(8,12) = (cos(a)*cos(b))/m;
-    A->at(8,13) = (cos(a)*cos(b))/m;
-    A->at(8,14) = (cos(a)*cos(b))/m;
-    A->at(8,15) = (cos(a)*cos(b))/m;
+    A->at(8,13) = A->at(8,12);
+    A->at(8,14) = A->at(8,12);
+    A->at(8,15) = A->at(8,12);	
+
+}
+
+void lqr::setLocalStateSpace(std::vector<double> *stateSpace){
+
+	a = stateSpace->at(4);
+	b = stateSpace->at(5);
+	c = stateSpace->at(6);
+	T1 = stateSpace->at(12);
+	T2 = stateSpace->at(13);
+	T3 = stateSpace->at(14);
+	T4 = stateSpace->at(15);
 
 }
 
@@ -77,24 +112,24 @@ void lqr::setMatrices(arma::mat *A,arma::mat *B,arma::mat *C){
     A->at(8,15) = cos(a)/m;*/
 
     A->at(9,12) = l/Ixx;
-    A->at(9,13) = l/Ixx;
-    A->at(9,14) = -l/Ixx;
+    A->at(9,13) = -l/Ixx;
+    A->at(9,14) = l/Ixx;
     A->at(9,15) = -l/Ixx;
 
-    A->at(10,12) = l/Iyy;
+    A->at(10,12) = -l/Iyy;
     A->at(10,13) = -l/Iyy;
     A->at(10,14) = l/Iyy;
-    A->at(10,15) = -l/Iyy;
+    A->at(10,15) = l/Iyy;
 
-    A->at(11,12) = (-l/Ixx)*r;
-    A->at(11,13) = (l/Ixx)*r;
-    A->at(11,14) = (l/Ixx)*r;
-    A->at(11,15) = (-l/Ixx)*r;
+    A->at(11,12) = (l/Ixx)*r;
+    A->at(11,13) = (-l/Ixx)*r;
+    A->at(11,14) = (-l/Ixx)*r;
+    A->at(11,15) = (l/Ixx)*r;
 
-	A->at(12,12) = -10;
-	A->at(13,13) = -10;
-	A->at(14,14) = -10;
-	A->at(15,15) = -10;
+	A->at(12,12) = 1;
+	A->at(13,13) = 1;
+	A->at(14,14) = 1;
+	A->at(15,15) = 1;
 
     B->at(12,0) = 1.5;
     B->at(13,1) = 1.5;
@@ -120,28 +155,29 @@ void lqr::computeControl(arma::mat *xp, arma::mat *xc, arma::mat *y,
 					   arma::mat *u){
 	
 	
-	A->save("A.csv", arma::csv_ascii);
-	B->save("B.csv", arma::csv_ascii);
-	Q->save("Q.csv", arma::csv_ascii);
-	R->save("R.csv", arma::csv_ascii);
+	A->save("CSV/A.csv", arma::csv_ascii);
+	B->save("CSV/B.csv", arma::csv_ascii);
+	Q->save("CSV/Q.csv", arma::csv_ascii);
+	R->save("CSV/R.csv", arma::csv_ascii);
 	
 	//clock_t begin = clock();
 	PyRun_SimpleString("pythLqr.LQR()");
 	//double elapsed_secs = double(clock() - begin)/CLOCKS_PER_SEC;
 	//std::cout << elapsed_secs << std::endl;
-
+	//P->load("P.csv", arma::csv_ascii);
+	//*K = R->i() * B->t() * *P;
 	//Change to retrieving X, offload more computation to armadillo
-	K->load("K.csv", arma::csv_ascii);
+	K->load("CSV/K.csv", arma::csv_ascii);
 	//K->print("K:");
 	
 }
 
-void lqr::run(std::vector<double> *stateSpace)
+void lqr::run(std::vector<double> *stateSpace, std::vector<double> *motorLqrAdd)
 {
 
-
-	a = 0;
-	b = 0;    
+	a = 1;
+	b = 90; 
+	c = 0;   
 	a = M_PI*a/180;
     b = M_PI*b/180;
     m = 0.62;
@@ -191,31 +227,24 @@ void lqr::run(std::vector<double> *stateSpace)
 	//u.at(3) = 1;
 
 	double elapsed_secs; 
-	//A.print("A");
-	//B.print("B");
-	//Q.print("Q");
-	//R.print("R");
-    //computePrediction(&xp,&xc,&y,&A,&B,&C,&P,&p,&K,&Q,&R,&eye,&u);
-	//xc.print("xc");
+	R = R*10;
 	Py_Initialize();
 	PyRun_SimpleString("import sys; sys.path.append('.')");
 	PyRun_SimpleString("import pythLqr;");
-	clock_t begin = clock();
-	computeControl(&xp,&xc,&y,&A,&B,&C,&P,&p,&K,&Q,&R,&eye,&u);
-	clock_t end = clock();	
-	Py_Finalize();
-	elapsed_secs = double(end - begin)/CLOCKS_PER_SEC;
+	clock_t begin,end;
+	begin = clock();
+	while(1){
+		computeControl(&xp,&xc,&y,&A,&B,&C,&P,&p,&K,&Q,&R,&eye,&u);
+		end = clock();	
+		elapsed_secs = double(end - begin)/CLOCKS_PER_SEC;
+		begin = clock();
+		//u = -K * (xc-xd);
+		u = -K * (xd-xc);
+		u.print("u");	
+	}
 	//std::cout << elapsed_secs << std::endl;
+	Py_Finalize();	
 	//printf("%f",elapsed_secs);	
-	u = -K * (xc-xd);
-	u.print("u");
-	//computePrediction(&xp,&xc,&y,&A,&B,&C,&P,&p,&K,&Q,&R,&eye,&u);
-	//xp.print("xp");
-	//xc = xp;
-	//computeControl(&xp,&xc,&y,&A,&B,&C,&P,&p,&K,&Q,&R,&eye,&u);
-	//u.print("u2");
-	//computePrediction(&xp,&xc,&y,&A,&B,&C,&P,&p,&K,&Q,&R,&eye,&u);
-	//xp.print("xp2:");
     /*A.print("A:");
     B.print("B:");
     C.print("C:");

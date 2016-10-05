@@ -19,6 +19,7 @@ class kalman{
 					   arma::mat *u);
 	void setAMatrix(arma::mat *A);
 	void setMatrices(arma::mat *A,arma::mat *B,arma::mat *C);
+	void setLocalStateSpace(std::vector<double> *stateSpace, arma::mat *xc);
 	float a,b,c,m,l,r,Ixx,Iyy,Izz,T1,T2,T3,T4;
 
 };
