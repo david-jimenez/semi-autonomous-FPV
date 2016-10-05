@@ -74,7 +74,7 @@ void multiwii::accCalTest(MSP& msp)
 }
 
 
-void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std::vector<int> *aux)
+void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std::vector<int> *aux,std::vector<double> *stateSpace)
 {
     Serial s("/dev/ttyUSB0");
 	//std::system("clear");
@@ -89,6 +89,7 @@ void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std:
 	std::vector<std::string> tempMotor(8);
 	std::vector<std::string> tempAtt(6);
 	std::vector<std::string> tempAux(16);
+	float trust = 0.3;
 	while(1){
 		out<Motor>(msp, motorOut);
 		motorString = motorOut.str();
@@ -133,6 +134,9 @@ void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std:
 		attitude->at(0) = att.at(0)/10;
 		attitude->at(1) = att.at(1)/10;
 		attitude->at(2) = att.at(2);
+		stateSpace->at(3) = trust*attitude->at(1) + (1-trust)*stateSpace->at(3);
+		stateSpace->at(4) = trust*attitude->at(0) + (1-trust)*stateSpace->at(4);
+		stateSpace->at(5) = trust*attitude->at(2) + (1-trust)*stateSpace->at(5);
 //---------------------------------------------------------------//
 		out<RC>(msp, auxOut);
 		auxString = auxOut.str();

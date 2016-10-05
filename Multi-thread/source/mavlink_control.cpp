@@ -63,7 +63,7 @@
 mavlink_control::mavlink_control(){}
 
 int
-mavlink_control::top(std::vector<float> *flowVals)
+mavlink_control::top(std::vector<float> *flowVals, std::vector<double> *stateSpace)
 {
 
 	// --------------------------------------------------------------------------
@@ -134,10 +134,21 @@ mavlink_control::top(std::vector<float> *flowVals)
 	 */
 	serial_port.start();
 	autopilot_interface.start();
+	float trust = 0.3;
+	double newVal;
 
 	while(1){
 	
 		autopilot_interface.getFlowData(flowVals);
+		newVal = trust*flowVals->at(2) + (1-trust)*stateSpace->at(2);
+		stateSpace->at(2) = newVal;
+		newVal = trust*flowVals->at(0) + (1-trust)*stateSpace->at(6);
+		stateSpace->at(6) = newVal;
+		newVal = trust*flowVals->at(1) + (1-trust)*stateSpace->at(7);
+		stateSpace->at(7) = newVal;		
+		//stateSpace->at(2) = trust*flowVals->at(2) + (1-trust)*stateSpace->at(2);
+		//stateSpace->at(6) = trust*flowVals->at(6) + (1-trust)*stateSpace->at(6);
+		//stateSpace->at(7) = trust*flowVals->at(7) + (1-trust)*stateSpace->at(7);
 		//printf("%f\n",mx);
 		//printf("%f\n",my);
 		//printf("%f\n",md);
@@ -366,12 +377,12 @@ mavlink_control::quit_handler( int sig )
 //   Main
 // ------------------------------------------------------------------------------
 int
-mavlink_control::start(std::vector<float> *flowVals)
+mavlink_control::start(std::vector<float> *flowVals,std::vector<double> *stateSpace)
 {
 	// This program uses throw, wrap one big try/catch here
 	try
 	{
-		int result = top(flowVals);
+		int result = top(flowVals,stateSpace);
 		return result;
 	}
 

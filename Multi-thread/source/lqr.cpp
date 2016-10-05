@@ -19,40 +19,6 @@ lqr::lqr(){}
 
 void lqr::setAMatrix(arma::mat *A){
 
-	if(a == 0){a += 0.0001;}
-	if(b == 0){b += 0.0001;}
-	if(c == 0){c += 0.0001;}
-	if(a == M_PI/2){a += 0.0001;}
-	if(b == M_PI/2){b += 0.0001;}
-	if(c == M_PI/2){c += 0.0001;}
-	if(a == M_PI){a += 0.0001;}
-	if(b == M_PI){b += 0.0001;}
-	if(c == M_PI){c += 0.0001;}
-	if(a == 3*M_PI/2){a += 0.0001;}
-	if(b == 3*M_PI/2){b += 0.0001;}
-	if(c == 3*M_PI/2){c += 0.0001;}
-
-    /*A->at(6,3) = (-cos(a)*cos(b)*cos(c))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
-	A->at(6,4) = (cos(b)*sin(c)+cos(c)*sin(a)*sin(b))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
-	A->at(6,5) = (sin(b)*cos(c)+cos(b)*sin(a)*sin(c))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
-    A->at(6,12) = (sin(b)*sin(c)-cos(b)*cos(c)*sin(a))/m;
-    A->at(6,13) = A->at(6,12);
-    A->at(6,14) = A->at(6,12);
-    A->at(6,15) = A->at(6,12);
-    A->at(7,3) = (-cos(a)*cos(b)*sin(c))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
-	A->at(7,4) = -(cos(b)*cos(c)-sin(a)*sin(b)*sin(c))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
-	A->at(7,5) = (sin(b)*sin(c)-cos(b)*cos(c)*sin(a))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
-    A->at(7,12) = -(cos(c)*sin(b)-cos(b)*sin(a)*sin(c))/m;
-    A->at(7,13) = A->at(7,12);
-    A->at(7,14) = A->at(7,12);
-    A->at(7,15) = A->at(7,12);
-    A->at(8,3) = (-sin(a)*sin(b)*(T1+T2+T3+T4))/m;
-	A->at(8,4) = (cos(a)*cos(b)*(T1+T2+T3+T4))/m;
-    A->at(8,12) = (cos(a)*sin(b))/m;
-    A->at(8,13) = A->at(8,12);
-    A->at(8,14) = A->at(8,12);
-    A->at(8,15) = A->at(8,12);*/
-
 	A->at(6,3) = (cos(a)*sin(c) - cos(c)*sin(a)*sin(b))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
 	A->at(6,4) = (cos(a)*cos(b)*cos(c))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
 	A->at(6,5) = (cos(c)*sin(a)-cos(a)*sin(b)*sin(c))*((T1/m)+(T2/m)+(T3/m)+(T4/m));
@@ -95,21 +61,6 @@ void lqr::setMatrices(arma::mat *A,arma::mat *B,arma::mat *C){
     A->at(3,9) = 1;
     A->at(4,10) = 1;
     A->at(5,11) = 1;
-    /*A->at(6,3) = cos(a)*((T1/m)+(T2/m)+(T3/m)+(T4/m));
-    A->at(6,12) = sin(a)/m;
-    A->at(6,13) = sin(a)/m;
-    A->at(6,14) = sin(a)/m;
-    A->at(6,15) = sin(a)/m;
-    A->at(7,4) = cos(b)*((T1/m)+(T2/m)+(T3/m)+(T4/m));
-    A->at(7,12) = sin(b)/m;
-    A->at(7,13) = sin(b)/m;
-    A->at(7,14) = sin(b)/m;
-    A->at(7,15) = sin(b)/m;
-    A->at(8,3) = (-sin(a)*(T1+T2+T3+T4))/m;
-    A->at(8,12) = cos(a)/m;
-    A->at(8,13) = cos(a)/m;
-    A->at(8,14) = cos(a)/m;
-    A->at(8,15) = cos(a)/m;*/
 
     A->at(9,12) = l/Ixx;
     A->at(9,13) = -l/Ixx;
@@ -161,6 +112,7 @@ void lqr::computeControl(arma::mat *xp, arma::mat *xc, arma::mat *y,
 	R->save("CSV/R.csv", arma::csv_ascii);
 	
 	//clock_t begin = clock();
+	std::cout << T1 << std::endl;
 	PyRun_SimpleString("pythLqr.LQR()");
 	//double elapsed_secs = double(clock() - begin)/CLOCKS_PER_SEC;
 	//std::cout << elapsed_secs << std::endl;
@@ -172,12 +124,18 @@ void lqr::computeControl(arma::mat *xp, arma::mat *xc, arma::mat *y,
 	
 }
 
-void lqr::run(std::vector<double> *stateSpace, std::vector<double> *motorLqrAdd)
+void lqr::convertInput(arma::mat *u, std::vector<int> combinedMotor){
+
+	
+
+}
+
+void lqr::run(std::vector<double> *stateSpace, std::vector<double> *motorLqrAdd, std::vector<int> *combinedMotor)
 {
 
-	a = 1;
-	b = 90; 
-	c = 0;   
+	a = 0; //roll
+	b = 0; //pitch
+	c = 0; //yaw
 	a = M_PI*a/180;
     b = M_PI*b/180;
     m = 0.62;
@@ -186,10 +144,14 @@ void lqr::run(std::vector<double> *stateSpace, std::vector<double> *motorLqrAdd)
     Ixx = 3.02*pow(10,-3);
     Iyy = 3.02*pow(10,-3);
     Izz = 3.02*pow(10,-3);
-    T1 = 1.5;
-    T2 = 1.5;
-    T3 = 1.5;
-    T4 = 1.5;
+    //T1 = 1.5;
+    //T2 = 1.5;
+    //T3 = 1.5;
+    //T4 = 1.5;
+	T1 = 0.1;
+    T2 = 0.1;
+    T3 = 0.1;
+    T4 = 0.1;
     arma::mat A(16,16,arma::fill::zeros);
     arma::mat B(16,4,arma::fill::zeros);
     arma::mat C(16,16,arma::fill::zeros);
@@ -220,6 +182,10 @@ void lqr::run(std::vector<double> *stateSpace, std::vector<double> *motorLqrAdd)
 
 	xd = xc;
 	xd.at(2) = 1;
+	xd.at(12) = 1.5;
+	xd.at(13) = 1.5;
+	xd.at(14) = 1.5;
+	xd.at(15) = 1.5;
 
 	//u.at(0) = 1;
 	//u.at(1) = 1;
@@ -238,9 +204,13 @@ void lqr::run(std::vector<double> *stateSpace, std::vector<double> *motorLqrAdd)
 		end = clock();	
 		elapsed_secs = double(end - begin)/CLOCKS_PER_SEC;
 		begin = clock();
-		//u = -K * (xc-xd);
-		u = -K * (xd-xc);
-		u.print("u");	
+		u = -K * (xc-xd);
+		//u = -K * (xd-xc);
+		//u.print("u");	
+		motorLqrAdd->at(0) = u.at(0);
+		motorLqrAdd->at(1) = u.at(1);
+		motorLqrAdd->at(2) = u.at(2);
+		motorLqrAdd->at(3) = u.at(3);
 	}
 	//std::cout << elapsed_secs << std::endl;
 	Py_Finalize();	
