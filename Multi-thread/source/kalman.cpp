@@ -52,15 +52,15 @@ void kalman::setMatrices(arma::mat *A,arma::mat *B,arma::mat *C){
     A->at(4,10) = 1;
     A->at(5,11) = 1;
 
-    A->at(9,12) = l/Ixx;
-    A->at(9,13) = -l/Ixx;
-    A->at(9,14) = l/Ixx;
-    A->at(9,15) = -l/Ixx;
+    A->at(9,12) = lp/Ixx;
+    A->at(9,13) = -lp/Ixx;
+    A->at(9,14) = lp/Ixx;
+    A->at(9,15) = -lp/Ixx;
 
-    A->at(10,12) = -l/Iyy;
-    A->at(10,13) = -l/Iyy;
-    A->at(10,14) = l/Iyy;
-    A->at(10,15) = l/Iyy;
+    A->at(10,12) = -lr/Iyy;
+    A->at(10,13) = -lr/Iyy;
+    A->at(10,14) = lr/Iyy;
+    A->at(10,15) = lr/Iyy;
 
     A->at(11,12) = (l/Ixx)*r;
     A->at(11,13) = (-l/Ixx)*r;
@@ -132,11 +132,11 @@ void kalman::computePrediction(arma::mat *xp, arma::mat *xc, arma::mat *y,
 
 }
 
-void kalman::convertInput(arma::mat *u, std::vector<int> combinedMotor){
+void kalman::convertInput(arma::mat *u, std::vector<double> combinedMotor){
 	
 }
 
-void kalman::run(std::vector<double> *stateSpace, std::vector<int> *combinedMotor)
+void kalman::run(std::vector<double> *stateSpace, std::vector<double> *combinedMotor, std::vector<float> *quadSpecs)
 {
 	/*a = 0; // Roll
 	b = 0; // Pitch
@@ -148,12 +148,19 @@ void kalman::run(std::vector<double> *stateSpace, std::vector<int> *combinedMoto
     T2 = 1.519;
     T3 = 1.519;
     T4 = 1.519;*/    
-	m = 0.62;
+	//m = 0.62;
     l = 0.15;
     r = 0.5;
-    Ixx = 3.02*pow(10,-3);
-    Iyy = 3.02*pow(10,-3);
-    Izz = 3.02*pow(10,-3);
+    //Ixx = 3.02*pow(10,-3);
+    //Iyy = 3.02*pow(10,-3);
+    //Izz = 3.02*pow(10,-3);
+
+	m = quadSpecs->at(0);
+	lp = quadSpecs->at(1);
+	lr = quadSpecs->at(2);
+	Ixx = quadSpecs->at(3);
+	Iyy = quadSpecs->at(4);
+	Izz = quadSpecs->at(5);
     
     arma::mat A(16,16,arma::fill::zeros);
     arma::mat B(16,4,arma::fill::zeros);

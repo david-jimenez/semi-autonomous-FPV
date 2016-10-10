@@ -694,7 +694,7 @@ start()
 void Autopilot_Interface::getFlowData(std::vector<float> *flowVals){
 
 	flowVals->at(0) = current_messages.opticalFlow.flow_comp_m_x;
-	flowVals->at(1) = current_messages.opticalFlow.flow_comp_m_y;
+	flowVals->at(1) = -current_messages.opticalFlow.flow_comp_m_y;
 	flowVals->at(2) = current_messages.opticalFlow.ground_distance;
 	flowVals->at(3) = (float) current_messages.opticalFlow.quality;
 

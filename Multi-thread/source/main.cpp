@@ -16,12 +16,13 @@ using namespace std;
 
 struct argumentPass{
 	std::vector<int> motorValues = std::vector<int>(4);
-	std::vector<int> combinedMotor = std::vector<int>(4);
+	std::vector<double> combinedMotor = std::vector<double>(4);
 	std::vector<int> aux = std::vector<int>(4);
 	std::vector<float> attitude = std::vector<float>(3);
 	std::vector<double> motorLqrAdd = std::vector<double>(4);
 	std::vector<float> flowValues = std::vector<float>(4);
 	std::vector<double> stateSpace = std::vector<double>(16);
+	std::vector<float> quadSpecs = std::vector<float>(6);
 };
 
 void *server_worker_thread(void *arg){
@@ -48,8 +49,8 @@ void *mavlink_worker_thread(void *arg){
 	argumentPass *Vars = reinterpret_cast<argumentPass*>(arg);
 	std::vector<float> *flowValues = &Vars->flowValues;
 	std::vector<double> *stateSpace = &Vars->stateSpace;
-	mavlink_control mavlink;
-	mavlink.start(flowValues,stateSpace);
+	//mavlink_control mavlink;
+	//mavlink.start(flowValues,stateSpace);
 	//TODO: Remember that the flow sensor is backwards on the rig. This must be handled in code
 }
 
@@ -57,10 +58,10 @@ void *PWM_worker_thread(void *arg){
 	argumentPass *Vars = reinterpret_cast<argumentPass*>(arg);
 	printf("Started PWM thread\n");
 	std::vector<int> *motorValues = &Vars->motorValues;
-	std::vector<int> *combinedMotor = &Vars->combinedMotor;
+	std::vector<double> *combinedMotor = &Vars->combinedMotor;
 	std::vector<double> *motorLqrAdd = &Vars->motorLqrAdd;
-	//PWM PWMController;
-	//PWMController.run(motorValues);
+	PWM PWMController;
+	PWMController.run(motorValues, motorLqrAdd, combinedMotor);
 }
 
 void *control_worker_thread(void *arg){
@@ -68,9 +69,10 @@ void *control_worker_thread(void *arg){
 	printf("Started Control thread\n");
 	std::vector<double> *stateSpace = &Vars->stateSpace;
 	std::vector<double> *motorLqrAdd = &Vars->motorLqrAdd;
-	std::vector<int> *combinedMotor = &Vars->combinedMotor;
+	std::vector<double> *combinedMotor = &Vars->combinedMotor;
+	std::vector<float> *quadSpecs = &Vars->quadSpecs;
 	lqr LQR;
-	LQR.run(stateSpace,motorLqrAdd, combinedMotor);
+	LQR.run(stateSpace,motorLqrAdd, combinedMotor,quadSpecs);
 }
 
 void *pathfind_worker_thread(void *arg){
@@ -81,23 +83,42 @@ void *pathfind_worker_thread(void *arg){
 void *predict_worker_thread(void *arg){
 	argumentPass *Vars = reinterpret_cast<argumentPass*>(arg);
 	std::vector<double> *stateSpace = &Vars->stateSpace;
-	std::vector<int> *combinedMotor = &Vars->combinedMotor;
+	std::vector<double> *combinedMotor = &Vars->combinedMotor;
+	std::vector<float> *quadSpecs = &Vars->quadSpecs;
 	printf("Started Predict thread\n");
 	kalman KFilt;
-	KFilt.run(stateSpace, combinedMotor);
+	KFilt.run(stateSpace, combinedMotor, quadSpecs);
 }
 
 int main(){
 
+//-------------------------------------------------------------------------------
 	argumentPass threadVars;
 	threadVars.aux.at(3) = 1500;
 	for(int i = 0;i < 16; i++){	
 		threadVars.stateSpace.at(i) = 0;
 	}
+	threadVars.quadSpecs.at(0) = 0.691; //Weight in kg
+	threadVars.quadSpecs.at(1) = 0.097;//Distance, centre to pitch motor
+	threadVars.quadSpecs.at(2) = 0.076;//Distance, centre to roll motor
+	threadVars.quadSpecs.at(3) = 3.413727*pow(10,-3);//Ixx
+	threadVars.quadSpecs.at(4) = 3.284027*pow(10,-3);//Iyy
+	threadVars.quadSpecs.at(5) = 4.047568*pow(10,-3);//Izz
+
+//-------------------------------------------------------------------------------
+
 	pthread_t server_thread,multiwii_thread,mavlink_thread,PWM_thread,control_thread,pathfind_thread,predict_thread;
 	int server_ret,multiwii_ret,mavlink_ret,PWM_ret,control_ret,pathfind_ret,predict_ret;
 
+	threadVars.aux.at(2) = 1000;
+
 	printf("In main: creating thread\n");
+	multiwii_ret = pthread_create(&multiwii_thread, NULL, &multiwii_worker_thread, &threadVars);
+	if(multiwii_ret != 0){
+		printf("Error: pthread_create() failed \n");
+		exit(EXIT_FAILURE);
+	}
+	//while(threadVars.aux.at(2) < 1750){}
 	control_ret = pthread_create(&control_thread, NULL, &control_worker_thread, &threadVars);
 	if(control_ret != 0){
 		printf("Error: pthread_create() failed \n");
@@ -118,11 +139,6 @@ int main(){
 		printf("Error: pthread_create() failed \n");
 		exit(EXIT_FAILURE);
 	}	
-	multiwii_ret = pthread_create(&multiwii_thread, NULL, &multiwii_worker_thread, &threadVars);
-	if(multiwii_ret != 0){
-		printf("Error: pthread_create() failed \n");
-		exit(EXIT_FAILURE);
-	}
 	mavlink_ret = pthread_create(&mavlink_thread, NULL, &mavlink_worker_thread, &threadVars);
 	if(mavlink_ret != 0){
 		printf("Error: pthread_create() failed \n");
@@ -133,23 +149,20 @@ int main(){
 		printf("Error: pthread_create() failed \n");
 		exit(EXIT_FAILURE);
 	}
+
+//-------------------------------------------------------------------------------
 	int check = 1000;
-	while(check < 1750){
-		//std::cout << flowVals.at(2) << std::endl;	
-		//std::cout << threadVars.motorValues.at(0) << std::endl;
-		//std::cout << threadVars.attitude.at(0) << std::endl;
-		//std::cout << threadVars.attitude.at(1) << std::endl;
-		//std::cout << threadVars.attitude.at(2) << std::endl;
-		//std::cout << threadVars.aux.at(2) << std::endl;
-		//std::cout << threadVars.motorLqrAdd.at(0) << std::endl;
-		//check = threadVars.aux.at(2);
-		//std::cout << threadVars.flowValues.at(0) << std::endl;
-		//std::cout << threadVars.flowValues.at(1) << std::endl;
-		//std::cout << threadVars.flowValues.at(2) << std::endl;
-		for(int i = 0;i < 16;i++){
-			std::cout << threadVars.stateSpace.at(i) << std::endl;
+	double thrustTemp;
+	while(1){
+	//while(threadVars.aux.at(2) > 1750){
+		for(int i = 0;i < 12;i++){
+			//std::cout << threadVars.stateSpace.at(i) << std::endl;
 		}
-		std::system("clear");
-		std::cout << "\033[1;1H";
+		for(int i = 12;i < 16;i++){
+			//thrustTemp = threadVars.stateSpace.at(i) + threadVars.motorLqrAdd.at(i-12);
+			//std::cout << thrustTemp  << std::endl;
+		}
+		//std::system("clear");
+		//std::cout << "\033[1;1H";
 	}
 }

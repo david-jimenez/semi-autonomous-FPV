@@ -12,7 +12,7 @@
 class lqr{
 	public:
 	lqr();
-	void run(std::vector<double> *stateSpace, std::vector<double> *motorLqrAdd, std::vector<int> *combinedMotor);
+	void run(std::vector<double> *stateSpace, std::vector<double> *motorLqrAdd, std::vector<double> *combinedMotor, std::vector<float> *quadSpecs);
 	void computeControl(arma::mat *xp, arma::mat *xc, arma::mat *y,
                        arma::mat *A,  arma::mat *B, arma::mat *C,
                        arma::mat *P, arma::mat *p, arma::mat *K,
@@ -22,6 +22,6 @@ class lqr{
 	void setLocalStateSpace(std::vector<double> *stateSpace);
 	void setMatrices(arma::mat *A,arma::mat *B,arma::mat *C);
 	void convertInput(arma::mat *u, std::vector<int> combinedMotor);
-	float a,b,c,m,l,r,Ixx,Iyy,Izz,T1,T2,T3,T4;
+	float a,b,c,m,lp,lr,l,r,Ixx,Iyy,Izz,T1,T2,T3,T4;
 
 };

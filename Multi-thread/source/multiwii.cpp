@@ -158,6 +158,7 @@ void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std:
 			auxVec.at(k) = stoi(tokens.at(2*k + 9));
 			aux->at(k) = auxVec.at(k);
 		}
+		//out<RawIMU>(msp, std::cout);
 	}
 	//out<RC>(msp, std::cout);
 	//out<Attitude>(msp, std::cout);
