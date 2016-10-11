@@ -63,7 +63,7 @@
 mavlink_control::mavlink_control(){}
 
 int
-mavlink_control::top(std::vector<float> *flowVals, std::vector<double> *stateSpace)
+mavlink_control::top(std::vector<float> *flowVals, std::vector<double> *stateSpace,std::vector<int> *aux)
 {
 
 	// --------------------------------------------------------------------------
@@ -74,7 +74,7 @@ mavlink_control::top(std::vector<float> *flowVals, std::vector<double> *stateSpa
 #ifdef __APPLE__
 	char *uart_name = (char*)"/dev/tty.usbmodem1";
 #else
-	char *uart_name = (char*)"/dev/ttyACM0";
+	char *uart_name = (char*)"/dev/ttyACM2";
 #endif
 	int baudrate = 57600;
 
@@ -134,18 +134,43 @@ mavlink_control::top(std::vector<float> *flowVals, std::vector<double> *stateSpa
 	 */
 	serial_port.start();
 	autopilot_interface.start();
-	float trust = 0.3;
+	float trust = 1;
+	float heightTrust = 1;
+	float zVelTrust = 1;
+	float prevTimeStamp;
+	float zVelocity;
+	float prevDist;
 	double newVal;
+	double time;
+	double roll,pitch;
 
-	while(1){
-	
+	autopilot_interface.getFlowData(flowVals);	
+	prevTimeStamp = flowVals->at(4);
+	prevDist = flowVals->at(2);
+
+	while(aux->at(2) > 1750){
+		roll = stateSpace->at(4);
+		pitch = stateSpace->at(3);
 		autopilot_interface.getFlowData(flowVals);
-		newVal = trust*flowVals->at(2) + (1-trust)*stateSpace->at(2);
-		stateSpace->at(2) = newVal;
+		newVal = heightTrust*flowVals->at(2) + (1-heightTrust)*stateSpace->at(2);
+		if(newVal > 0.3){
+			//newVal = newVal*cos(roll)*cos(pitch);
+			stateSpace->at(2) = newVal;		
+		}		
 		newVal = trust*flowVals->at(0) + (1-trust)*stateSpace->at(6);
 		stateSpace->at(6) = newVal;
 		newVal = trust*flowVals->at(1) + (1-trust)*stateSpace->at(7);
-		stateSpace->at(7) = newVal;		
+		stateSpace->at(7) = newVal;	
+		//std::cout << flowVals->at(0) << "    " << flowVals->at(1) << std::endl;
+		if(flowVals->at(4) > prevTimeStamp){
+			time = (flowVals->at(4) - prevTimeStamp)*pow(10,-6);
+			//std::cout << flowVals->at(2) << "    " << prevDist << "    " << time << std::endl;
+			zVelocity = (flowVals->at(2) - prevDist)/time;
+			newVal = zVelTrust*zVelocity + (1-zVelTrust)*stateSpace->at(8);
+			//stateSpace->at(8) = newVal;
+			prevTimeStamp = flowVals->at(4);
+			prevDist = flowVals->at(2);
+		}	
 		//stateSpace->at(2) = trust*flowVals->at(2) + (1-trust)*stateSpace->at(2);
 		//stateSpace->at(6) = trust*flowVals->at(6) + (1-trust)*stateSpace->at(6);
 		//stateSpace->at(7) = trust*flowVals->at(7) + (1-trust)*stateSpace->at(7);
@@ -163,7 +188,7 @@ mavlink_control::top(std::vector<float> *flowVals, std::vector<double> *stateSpa
 	/*
 	 * Now we can implement the algorithm we want on top of the autopilot interface
 	 */
-	commands(autopilot_interface);
+	//commands(autopilot_interface);
 
 
 	// --------------------------------------------------------------------------
@@ -377,12 +402,12 @@ mavlink_control::quit_handler( int sig )
 //   Main
 // ------------------------------------------------------------------------------
 int
-mavlink_control::start(std::vector<float> *flowVals,std::vector<double> *stateSpace)
+mavlink_control::start(std::vector<float> *flowVals,std::vector<double> *stateSpace, std::vector<int> *aux)
 {
 	// This program uses throw, wrap one big try/catch here
 	try
 	{
-		int result = top(flowVals,stateSpace);
+		int result = top(flowVals,stateSpace,aux);
 		return result;
 	}
 

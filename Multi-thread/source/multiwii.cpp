@@ -13,6 +13,8 @@
 #include "../include/mspdata.h"
 #include "../include/multiwii.h"
 
+#define M_PI 3.14159265358979323846
+
 multiwii::multiwii(){}
 
 template<class T>
@@ -79,18 +81,21 @@ void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std:
     Serial s("/dev/ttyUSB0");
 	//std::system("clear");
     MSP msp(s);
-	std::stringstream motorOut, attOut, auxOut;
-	std::string motorString, attString, auxString;
+	std::stringstream motorOut, attOut, auxOut, gyroOut;
+	std::string motorString, attString, auxString, gyroString;
 	std::vector<int> motorVals(4);
 	std::vector<float> att(3);
 	std::vector<int> auxVec(4);
+	std::vector<float> gyroValues(3);
 	char * token;
 	int i = 0;
 	std::vector<std::string> tempMotor(8);
 	std::vector<std::string> tempAtt(6);
 	std::vector<std::string> tempAux(16);
-	float trust = 0.3;
-	while(1){
+	std::vector<std::string> tempGyro(6);
+	float trust = 1;
+	float gyroTrust = 1;
+	while(aux->at(4) > 1400){
 		out<Motor>(msp, motorOut);
 		motorString = motorOut.str();
 		i = 0;
@@ -158,7 +163,35 @@ void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std:
 			auxVec.at(k) = stoi(tokens.at(2*k + 9));
 			aux->at(k) = auxVec.at(k);
 		}
-		//out<RawIMU>(msp, std::cout);
+//-------------------------------------------------------------------//
+		out<RawIMU>(msp, gyroOut);
+		gyroString = gyroOut.str();
+		i = 0;
+		while(i < 3 && getline(gyroOut, tempGyro.at(i))){
+			i++;
+		}
+		tempString.clear();
+		tokens.clear();
+		for(int j = 0; j < 6; j++){
+			tempString = tempGyro.at(j);
+			std::stringstream ss(tempString);
+			while(getline(ss,item,':')){
+				tokens.push_back(item);
+			}
+		}
+		std::stringstream sd(tokens.at(3));
+		tokens.clear();
+		while(getline(sd,item,',')){
+			tokens.push_back(item);
+		}
+		for(int k = 0; k < 3; k++){
+			gyroValues.at(k) = (float) stod(tokens.at(k));
+			gyroValues.at(k) = gyroValues.at(k)/4.096;
+			stateSpace->at(k + 9) = (gyroValues.at(k)*M_PI)/180;
+			//std::cout << gyroValues.at(k) << " ";
+		}
+		// Roll = 0, pitch = 1, yaw = 2
+		//std::cout << std::endl;
 	}
 	//out<RC>(msp, std::cout);
 	//out<Attitude>(msp, std::cout);

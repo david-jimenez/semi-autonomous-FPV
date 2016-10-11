@@ -17,12 +17,14 @@ using namespace std;
 struct argumentPass{
 	std::vector<int> motorValues = std::vector<int>(4);
 	std::vector<double> combinedMotor = std::vector<double>(4);
-	std::vector<int> aux = std::vector<int>(4);
+	std::vector<int> aux = std::vector<int>(5);
 	std::vector<float> attitude = std::vector<float>(3);
 	std::vector<double> motorLqrAdd = std::vector<double>(4);
-	std::vector<float> flowValues = std::vector<float>(4);
+	std::vector<float> flowValues = std::vector<float>(5);
 	std::vector<double> stateSpace = std::vector<double>(16);
 	std::vector<float> quadSpecs = std::vector<float>(6);
+	std::vector<int> motorTarget = std::vector<int>(4);
+	std::vector<pthread_mutex_t> stateMutex = std::vector<pthread_mutex_t>(16);
 };
 
 void *server_worker_thread(void *arg){
@@ -40,6 +42,7 @@ void *multiwii_worker_thread(void *arg){
 	std::vector<float> *attitude = &Vars->attitude;
 	std::vector<int> *aux = &Vars->aux;
 	std::vector<double> *stateSpace = &Vars->stateSpace;
+	std::vector<pthread_mutex_t> *stateMutex = &Vars->stateMutex;
 	multiwii Naze;
 	Naze.run(motorValues,attitude,aux,stateSpace);
 }
@@ -49,8 +52,10 @@ void *mavlink_worker_thread(void *arg){
 	argumentPass *Vars = reinterpret_cast<argumentPass*>(arg);
 	std::vector<float> *flowValues = &Vars->flowValues;
 	std::vector<double> *stateSpace = &Vars->stateSpace;
+	std::vector<int> *aux = &Vars->aux;
+	std::vector<pthread_mutex_t> *stateMutex = &Vars->stateMutex;
 	//mavlink_control mavlink;
-	//mavlink.start(flowValues,stateSpace);
+	//mavlink.start(flowValues,stateSpace,aux);
 	//TODO: Remember that the flow sensor is backwards on the rig. This must be handled in code
 }
 
@@ -60,8 +65,10 @@ void *PWM_worker_thread(void *arg){
 	std::vector<int> *motorValues = &Vars->motorValues;
 	std::vector<double> *combinedMotor = &Vars->combinedMotor;
 	std::vector<double> *motorLqrAdd = &Vars->motorLqrAdd;
+	std::vector<int> *aux = &Vars->aux;
+	std::vector<int> *motorTarget = &Vars->motorTarget;
 	PWM PWMController;
-	PWMController.run(motorValues, motorLqrAdd, combinedMotor);
+	PWMController.run(motorValues, motorLqrAdd, combinedMotor,aux,motorTarget);
 }
 
 void *control_worker_thread(void *arg){
@@ -71,12 +78,14 @@ void *control_worker_thread(void *arg){
 	std::vector<double> *motorLqrAdd = &Vars->motorLqrAdd;
 	std::vector<double> *combinedMotor = &Vars->combinedMotor;
 	std::vector<float> *quadSpecs = &Vars->quadSpecs;
+	std::vector<int> *aux = &Vars->aux;
 	lqr LQR;
-	LQR.run(stateSpace,motorLqrAdd, combinedMotor,quadSpecs);
+	LQR.run(stateSpace,motorLqrAdd, combinedMotor,quadSpecs,aux);
 }
 
 void *pathfind_worker_thread(void *arg){
 	argumentPass *Vars = reinterpret_cast<argumentPass*>(arg);
+	std::vector<int> *aux = &Vars->aux;
 	printf("Started Pathfind thread\n");
 }
 
@@ -85,16 +94,17 @@ void *predict_worker_thread(void *arg){
 	std::vector<double> *stateSpace = &Vars->stateSpace;
 	std::vector<double> *combinedMotor = &Vars->combinedMotor;
 	std::vector<float> *quadSpecs = &Vars->quadSpecs;
+	std::vector<int> *aux = &Vars->aux;
 	printf("Started Predict thread\n");
 	kalman KFilt;
-	KFilt.run(stateSpace, combinedMotor, quadSpecs);
+	KFilt.run(stateSpace, combinedMotor, quadSpecs,aux);
 }
 
 int main(){
 
 //-------------------------------------------------------------------------------
 	argumentPass threadVars;
-	threadVars.aux.at(3) = 1500;
+	threadVars.aux.at(4) = 1500;
 	for(int i = 0;i < 16; i++){	
 		threadVars.stateSpace.at(i) = 0;
 	}
@@ -118,7 +128,10 @@ int main(){
 		printf("Error: pthread_create() failed \n");
 		exit(EXIT_FAILURE);
 	}
-	//while(threadVars.aux.at(2) < 1750){}
+	//threadVars.aux.at(2) = 2000;
+	while(threadVars.aux.at(2) < 1750){
+		//std::cout << threadVars.aux.at(2) << std::endl;
+	}
 	control_ret = pthread_create(&control_thread, NULL, &control_worker_thread, &threadVars);
 	if(control_ret != 0){
 		printf("Error: pthread_create() failed \n");
@@ -129,13 +142,13 @@ int main(){
 		printf("Error: pthread_create() failed \n");
 		exit(EXIT_FAILURE);
 	}
-	pathfind_ret = pthread_create(&pathfind_thread, NULL, &pathfind_worker_thread, &threadVars);
-	if(pathfind_ret != 0){
+	server_ret = pthread_create(&server_thread, NULL, &server_worker_thread, &threadVars);
+	if(server_ret != 0){
 		printf("Error: pthread_create() failed \n");
 		exit(EXIT_FAILURE);
 	}
-	server_ret = pthread_create(&server_thread, NULL, &server_worker_thread, &threadVars);
-	if(server_ret != 0){
+	pathfind_ret = pthread_create(&pathfind_thread, NULL, &pathfind_worker_thread, &threadVars);
+	if(pathfind_ret != 0){
 		printf("Error: pthread_create() failed \n");
 		exit(EXIT_FAILURE);
 	}	
@@ -153,16 +166,43 @@ int main(){
 //-------------------------------------------------------------------------------
 	int check = 1000;
 	double thrustTemp;
-	while(1){
-	//while(threadVars.aux.at(2) > 1750){
+	//threadVars.aux.at(2) = 1900;
+	while(threadVars.aux.at(2) > 1750){
+	//while(threadVars.aux.at(2) > 1400){
+	//threadVars.aux.at(2) = 1500;
 		for(int i = 0;i < 12;i++){
-			//std::cout << threadVars.stateSpace.at(i) << std::endl;
+			std::cout << threadVars.stateSpace.at(i) << std::endl;
 		}
 		for(int i = 12;i < 16;i++){
-			//thrustTemp = threadVars.stateSpace.at(i) + threadVars.motorLqrAdd.at(i-12);
-			//std::cout << thrustTemp  << std::endl;
+			thrustTemp = threadVars.stateSpace.at(i) + threadVars.motorLqrAdd.at(i-12);
+			std::cout << thrustTemp  << std::endl;
 		}
-		//std::system("clear");
-		//std::cout << "\033[1;1H";
+		for(int i = 0;i < 4;i++){
+			std::cout << threadVars.motorValues.at(i) << "      ";
+			std::cout << threadVars.motorTarget.at(i) << "      ";
+			std::cout << (threadVars.motorTarget.at(i)/4) - 1000 << std::endl;
+		}
+		std::system("clear");
+		std::cout << "\033[1;1H";
+		//threadVars.aux.at(2) = 2000;
 	}
+
+	pthread_join(predict_thread, NULL);
+	std::cout << "Predict Thread Closed" << std::endl;
+	pthread_join(control_thread, NULL);
+	std::cout << "Control Thread Closed" << std::endl;
+	pthread_join(PWM_thread, NULL);
+	std::cout << "PWM Thread Closed" << std::endl;
+	pthread_join(mavlink_thread, NULL);
+	std::cout << "mavlink Thread Closed" << std::endl;
+	threadVars.aux.at(4) = 1000;
+	pthread_join(multiwii_thread, NULL);
+	std::cout << "multiwii Thread Closed" << std::endl;
+	pthread_join(pathfind_thread, NULL);
+	std::cout << "Pathfind Thread Closed" << std::endl;
+	pthread_join(server_thread, NULL);
+	std::cout << "Server Thread Closed" << std::endl;
+	
+
+
 }

@@ -88,17 +88,20 @@ void kalman::setMatrices(arma::mat *A,arma::mat *B,arma::mat *C){
 
 }
 
-void kalman::setLocalStateSpace(std::vector<double> *stateSpace, arma::mat *xc){
+void kalman::setLocalStateSpace(std::vector<double> *stateSpace, arma::mat *xc, std::vector<double> *combinedMotor){
 
-	for(int i = 0;i < 16; i++){
+	for(int i = 0;i < 12; i++){
 		xc->at(i) = stateSpace->at(i);
+	}
+	for(int i = 12; i < 16; i++){
+		xc->at(i) = combinedMotor->at(i-12);
 	}
 
 }
 
 void kalman::updateStateSpace(std::vector<double> *stateSpace, arma::mat *xp, double elapsedTime){
-	double temp;
-	for(int i = 0;i < 16;i++){
+	double temp, blargh;
+	for(int i = 0;i < 2;i++){
 		temp = stateSpace->at(i) + xp->at(i)*elapsedTime;
 		stateSpace->at(i) = temp;
 	}
@@ -136,7 +139,7 @@ void kalman::convertInput(arma::mat *u, std::vector<double> combinedMotor){
 	
 }
 
-void kalman::run(std::vector<double> *stateSpace, std::vector<double> *combinedMotor, std::vector<float> *quadSpecs)
+void kalman::run(std::vector<double> *stateSpace, std::vector<double> *combinedMotor, std::vector<float> *quadSpecs, std::vector<int> *aux)
 {
 	/*a = 0; // Roll
 	b = 0; // Pitch
@@ -211,8 +214,8 @@ void kalman::run(std::vector<double> *stateSpace, std::vector<double> *combinedM
 	clock_t begin,end;
 	double elapsed_secs;
 	begin = clock();
-	while(1){
-		setLocalStateSpace(stateSpace,&xc);
+	while(aux->at(2) > 1750){
+		setLocalStateSpace(stateSpace,&xc,combinedMotor);
 		a = xc.at(4);
 		b = xc.at(3);
 		c = xc.at(5);

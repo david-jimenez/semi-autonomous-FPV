@@ -83,8 +83,8 @@ using namespace std;
 class mavlink_control{
 	public:
 	mavlink_control();
-	int start(std::vector<float> *flowVals,std::vector<double> *stateSpace);
-	int top(std::vector<float> *flowVals,std::vector<double> *stateSpace);
+	int start(std::vector<float> *flowVals,std::vector<double> *stateSpace, std::vector<int> *aux);
+	int top(std::vector<float> *flowVals,std::vector<double> *stateSpace, std::vector<int> *aux);
 
 	void commands(Autopilot_Interface &autopilot_interface);
 	void parse_commandline(int argc, char **argv, char *&uart_name, int &baudrate);
