@@ -74,7 +74,7 @@ mavlink_control::top(std::vector<float> *flowVals, std::vector<double> *stateSpa
 #ifdef __APPLE__
 	char *uart_name = (char*)"/dev/tty.usbmodem1";
 #else
-	char *uart_name = (char*)"/dev/ttyACM2";
+	char *uart_name = (char*)"/dev/ttyACM0";
 #endif
 	int baudrate = 57600;
 
@@ -153,16 +153,17 @@ mavlink_control::top(std::vector<float> *flowVals, std::vector<double> *stateSpa
 		pitch = stateSpace->at(3);
 		autopilot_interface.getFlowData(flowVals);
 		newVal = heightTrust*flowVals->at(2) + (1-heightTrust)*stateSpace->at(2);
-		if(newVal > 0.3){
+		//std::cout << newVal << std::endl;
+		//if(newVal > 0.3){
 			//newVal = newVal*cos(roll)*cos(pitch);
 			stateSpace->at(2) = newVal;		
-		}		
+		//}		
 		newVal = trust*flowVals->at(0) + (1-trust)*stateSpace->at(6);
 		stateSpace->at(6) = newVal;
 		newVal = trust*flowVals->at(1) + (1-trust)*stateSpace->at(7);
 		stateSpace->at(7) = newVal;	
 		//std::cout << flowVals->at(0) << "    " << flowVals->at(1) << std::endl;
-		if(flowVals->at(4) > prevTimeStamp){
+		/*if(flowVals->at(4) > prevTimeStamp){
 			time = (flowVals->at(4) - prevTimeStamp)*pow(10,-6);
 			//std::cout << flowVals->at(2) << "    " << prevDist << "    " << time << std::endl;
 			zVelocity = (flowVals->at(2) - prevDist)/time;
@@ -170,7 +171,7 @@ mavlink_control::top(std::vector<float> *flowVals, std::vector<double> *stateSpa
 			//stateSpace->at(8) = newVal;
 			prevTimeStamp = flowVals->at(4);
 			prevDist = flowVals->at(2);
-		}	
+		}*/	
 		//stateSpace->at(2) = trust*flowVals->at(2) + (1-trust)*stateSpace->at(2);
 		//stateSpace->at(6) = trust*flowVals->at(6) + (1-trust)*stateSpace->at(6);
 		//stateSpace->at(7) = trust*flowVals->at(7) + (1-trust)*stateSpace->at(7);

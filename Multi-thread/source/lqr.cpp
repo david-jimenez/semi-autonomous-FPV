@@ -200,9 +200,9 @@ void lqr::run(std::vector<double> *stateSpace, std::vector<double> *motorLqrAdd,
 	Q.at(0,0) = 10;
 	Q.at(1,1) = 10;
 	Q.at(2,2) = 200;
-	Q.at(3,3) = 0.01;
-	Q.at(4,4) = 0.01;
-	Q.at(5,5) = 0.01;
+	Q.at(3,3) = 0.1;
+	Q.at(4,4) = 0.1;
+	Q.at(5,5) = 0.1;
 	Q.at(6,6) = 1;
 	Q.at(7,7) = 1;
 	Q.at(8,8) = 1;
@@ -214,7 +214,7 @@ void lqr::run(std::vector<double> *stateSpace, std::vector<double> *motorLqrAdd,
 	Q.at(14,14) = 1;
 	Q.at(15,15) = 1;
 
-	Q.print("Q");
+	//Q.print("Q");
 
 	double elapsed_secs,temp; 
 	R = R*1000;

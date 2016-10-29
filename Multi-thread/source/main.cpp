@@ -3,12 +3,14 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <vector>
+#include <fstream>
 #include "../include/server.h"
 #include "../include/multiwii.h"
 #include "../include/PWM.h"
 #include "../include/mavlink_control.h"
 #include "../include/kalman.h"
 #include "../include/lqr.h"
+#include <ctime>
 
 using namespace std;
 
@@ -54,8 +56,8 @@ void *mavlink_worker_thread(void *arg){
 	std::vector<double> *stateSpace = &Vars->stateSpace;
 	std::vector<int> *aux = &Vars->aux;
 	std::vector<pthread_mutex_t> *stateMutex = &Vars->stateMutex;
-	//mavlink_control mavlink;
-	//mavlink.start(flowValues,stateSpace,aux);
+	mavlink_control mavlink;
+	mavlink.start(flowValues,stateSpace,aux);
 	//TODO: Remember that the flow sensor is backwards on the rig. This must be handled in code
 }
 
@@ -129,6 +131,7 @@ int main(){
 		exit(EXIT_FAILURE);
 	}
 	//threadVars.aux.at(2) = 2000;
+	std::cout << CLOCKS_PER_SEC << std::endl;
 	while(threadVars.aux.at(2) < 1750){
 		//std::cout << threadVars.aux.at(2) << std::endl;
 	}
@@ -167,26 +170,54 @@ int main(){
 	int check = 1000;
 	double thrustTemp;
 	//threadVars.aux.at(2) = 1900;
+	clock_t time;
+	int clockInc = 0;
+	ofstream myFile;
+	myFile.open ("Results/results.csv");
+	myFile << "Time,x,y,z,pitch,roll,yaw,xd,yd,zd,pitchd,rolld,yawd,T1,T2,T3,T4,";
+	myFile << "mVals1,mVals2,mVals3,mVals4,mTarg1,mTarg2,mTarg3,mTarg4,";
+	myFile << "mTargDiv1,mTargDiv2,mTargDiv3,mTargDiv4,\n";
 	while(threadVars.aux.at(2) > 1750){
 	//while(threadVars.aux.at(2) > 1400){
 	//threadVars.aux.at(2) = 1500;
+		if(clockInc == 10){myFile << clock() << ",";}
 		for(int i = 0;i < 12;i++){
-			std::cout << threadVars.stateSpace.at(i) << std::endl;
+			//std::cout << threadVars.stateSpace.at(i) << std::endl;
+			if(clockInc == 10){myFile << threadVars.stateSpace.at(i) << ",";}
 		}
 		for(int i = 12;i < 16;i++){
 			thrustTemp = threadVars.stateSpace.at(i) + threadVars.motorLqrAdd.at(i-12);
-			std::cout << thrustTemp  << std::endl;
+			if(clockInc == 10){myFile << thrustTemp << ",";}
+			//std::cout << thrustTemp  << std::endl;
+		}
+		//for(int i = 0;i < 4;i++){
+			//std::cout << threadVars.motorValues.at(i) << "      ";
+			//std::cout << threadVars.motorTarget.at(i) << "      ";
+			//std::cout << (threadVars.motorTarget.at(i)/4) - 1000 << std::endl;
+			//if(clockInc == 10){myFile << threadVars.motorValues.at(i) << ",";}
+			//if(clockInc == 10){myFile << threadVars.motorValues.at(i) << ",";}
+		//}
+		for(int i = 0;i < 4;i++){
+			//std::cout << threadVars.motorValues.at(i) << "      ";
+			//std::cout << threadVars.motorTarget.at(i) << "      ";
+			//std::cout << (threadVars.motorTarget.at(i)/4) - 1000 << std::endl;
+			if(clockInc == 10){myFile << threadVars.motorTarget.at(i) << ",";}
 		}
 		for(int i = 0;i < 4;i++){
-			std::cout << threadVars.motorValues.at(i) << "      ";
-			std::cout << threadVars.motorTarget.at(i) << "      ";
-			std::cout << (threadVars.motorTarget.at(i)/4) - 1000 << std::endl;
+			//std::cout << threadVars.motorValues.at(i) << "      ";
+			//std::cout << threadVars.motorTarget.at(i) << "      ";
+			//std::cout << (threadVars.motorTarget.at(i)/4) - 1000 << std::endl;
+			//if(clockInc == 10){myFile << (threadVars.motorTarget.at(i)/4) - 1000 << ",";}
+			if(clockInc == 10){myFile << threadVars.motorLqrAdd.at(i) << ",";}
 		}
-		std::system("clear");
-		std::cout << "\033[1;1H";
+		if(clockInc == 10){myFile << "\n"; clockInc = 0;}
+		clockInc++;
+		//std::system("clear");
+		//std::cout << "\033[1;1H";
 		//threadVars.aux.at(2) = 2000;
+		
 	}
-
+	myFile.close();
 	pthread_join(predict_thread, NULL);
 	std::cout << "Predict Thread Closed" << std::endl;
 	pthread_join(control_thread, NULL);

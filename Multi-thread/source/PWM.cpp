@@ -18,21 +18,29 @@ bool PWM::combineValues(std::vector<int> *motVals, std::vector<double> *motorLqr
 	//x = 158.73y - Newton Thrust to Motor Input 4S
 	//y = 0.0049x - 3S
 	//x  = 204.0816 - 3S
-	float NazeToThrust,Combine,CombineToPWM;
+	float NazeToThrust,Combine,CombineToPWM, NazeToMaestro;
 	bool retVal = false;
 	for(int i = 0; i < 4; i ++){
 		NazeToThrust = (motVals->at(i) - 1000)*0.0049;
-		Combine = NazeToThrust + motorLqrAdd->at(i);
-		CombineToPWM = Combine*204.0816;
+		NazeToMaestro = (motVals->at(i)-1000)*4;
+		//Combine = NazeToThrust + motorLqrAdd->at(i);
+		Combine = motorLqrAdd->at(i);
+		//CombineToPWM = NazeToMaestro + Combine*204.0816*4;
+		CombineToPWM = 500 + Combine*204.0816*4;
 		//std::cout << CombineToPWM << std::endl;
 		if(0 < CombineToPWM && CombineToPWM < 4000){
 			//std::cout << CombineToPWM << std::endl;
-			motorTarget->at(i) = 4000 + CombineToPWM*4;
+			motorTarget->at(i) = 4000 + CombineToPWM;
 			tempMotorHold->at(i) = Combine;
 		}
+		/*if(4000 < CombineToPWM && CombineToPWM < 8000){
+			std::cout << CombineToPWM << std::endl;
+			motorTarget->at(i) = CombineToPWM;
+			tempMotorHold->at(i) = Combine;
+		}*/
 		else{
-			retVal = true;
-			motorTarget->at(i) = 4000 + (motVals->at(i)-1000)*4;
+			//retVal = true;
+			motorTarget->at(i) = 4000 + NazeToMaestro;
 			tempMotorHold->at(i) = NazeToThrust;
 		}
 		if(i == 3){
@@ -55,22 +63,29 @@ void PWM::run(std::vector<int> *motVals, std::vector<double> *motorLqrAdd, std::
 	maestro.setTarget(1, 4000);
 	maestro.setTarget(2, 4000);
 	maestro.setTarget(3, 4000);
-	maestro.setTarget(0, 0);
-	maestro.setTarget(1, 0);
-	maestro.setTarget(2, 0);
-	maestro.setTarget(3, 0);
+	sleep(3);
+	/*maestro.setTarget(0, 8000);
+	maestro.setTarget(1, 8000);
+	maestro.setTarget(2, 8000);
+	maestro.setTarget(3, 8000);
+	sleep(1);
+	maestro.setTarget(0, 4400);
+	maestro.setTarget(1, 4400);
+	maestro.setTarget(2, 4400);
+	maestro.setTarget(3, 4400);
+	sleep(1);	
 	maestro.setTarget(0, 4000);
 	maestro.setTarget(1, 4000);
 	maestro.setTarget(2, 4000);
-	maestro.setTarget(3, 4000);
+	maestro.setTarget(3, 4000);	*/
 	std::vector<int> motorTarget(4);
 	std::vector<double> tempMotorHold(4);
-	motorTarget.at(0) = motVals->at(0)*4;
+	//motorTarget.at(0) = motVals->at(0)*4;
 	bool retVal = false;
 	//std::system("clear");
 	while(aux->at(2) > 1750){
 		retVal = combineValues(motVals,motorLqrAdd,&tempMotorHold,&motorTarget);
-		retVal = true;
+		/*retVal = true;
 		if(retVal == true){
 			motorTarget.at(0) = 4000 + (motVals->at(0)-1000)*4;
 			motorTarget.at(1) = 4000 + (motVals->at(1)-1000)*4;
@@ -80,7 +95,7 @@ void PWM::run(std::vector<int> *motVals, std::vector<double> *motorLqrAdd, std::
 			combinedMotor->at(0) = (motVals->at(0) - 1000)*0.0049;
 			combinedMotor->at(0) = (motVals->at(0) - 1000)*0.0049;
 			combinedMotor->at(0) = (motVals->at(0) - 1000)*0.0049;
-		}
+		}*/
 		maestro.setTarget(0, motorTarget.at(0));
 		maestro.setTarget(1, motorTarget.at(1));
 		maestro.setTarget(2, motorTarget.at(2));

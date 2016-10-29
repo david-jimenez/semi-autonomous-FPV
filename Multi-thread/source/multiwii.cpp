@@ -79,8 +79,10 @@ void multiwii::accCalTest(MSP& msp)
 void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std::vector<int> *aux,std::vector<double> *stateSpace)
 {
     Serial s("/dev/ttyUSB0");
+	//std::cout << "asd1" << std::endl;
 	//std::system("clear");
     MSP msp(s);
+	//std::cout << "asd2" << std::endl;
 	std::stringstream motorOut, attOut, auxOut, gyroOut;
 	std::string motorString, attString, auxString, gyroString;
 	std::vector<int> motorVals(4);
@@ -97,14 +99,17 @@ void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std:
 	float gyroTrust = 1;
 	while(aux->at(4) > 1400){
 		out<Motor>(msp, motorOut);
+		//out<Motor>(msp,std::cout);
 		motorString = motorOut.str();
 		i = 0;
+		//std::cout << "asd" << std::endl;
 		while(i < 8 && getline(motorOut,tempMotor.at(i))){
 			i++;
 		}
 		std::string tempString;
 		std::vector<std::string> tokens;
 		std::string item;
+		//std::cout << "asd2" << std::endl;
 		for(int j = 0;j < 4;j++){
 			tempString = tempMotor.at(j);
 			std::stringstream ss(tempString);
@@ -112,6 +117,7 @@ void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std:
 				tokens.push_back(item);
 			}							
 		}
+		//std::cout << "asd3" << std::endl;
 		for(int k = 0;k < 4;k++){
 			motorVals.at(k) = stoi(tokens.at(2*k + 1));
 			motVals->at(k) = motorVals.at(k);
@@ -120,12 +126,14 @@ void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std:
 		out<Attitude>(msp, attOut);
 		attString = attOut.str();
 		i = 0;
+		//std::cout << "asd4" << std::endl;
 		while(i < 3 && getline(attOut, tempAtt.at(i))){
 			i++;
 		}
 		tempString.clear();
 		tokens.clear();
 		item.clear();
+		//std::cout << "asd5" << std::endl;
 		for(int j = 0;j < 3;j++){
 			tempString = tempAtt.at(j);
 			std::stringstream ss(tempString);
@@ -133,6 +141,7 @@ void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std:
 				tokens.push_back(item);
 			}
 		}
+		//std::cout << "asd6" << std::endl;
 		for(int k = 0;k < 3;k++){
 			att.at(k) = (float) stod(tokens.at(2*k + 1));
 		}
@@ -144,11 +153,15 @@ void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std:
 		stateSpace->at(5) = trust*attitude->at(2) + (1-trust)*stateSpace->at(5);
 //---------------------------------------------------------------//
 		out<RC>(msp, auxOut);
+		//out<RC>(msp, std::cout);
+		//std::cout << "hello" << std::endl;
 		auxString = auxOut.str();
 		i = 0;
+		//std::cout << "asd" << std::endl;
 		while(i < 8 && getline(auxOut, tempAux.at(i))){
 			i++;
 		}
+		//std::cout << "blah" << std::endl;
 		tempString.clear();
 		tokens.clear();
 		item.clear();
@@ -159,10 +172,12 @@ void multiwii::run(std::vector<int> *motVals, std::vector<float> *attitude, std:
 				tokens.push_back(item);
 			}
 		}
+		//std::cout << tokens.at(2*2 + 9);
 		for(int k = 0; k < 4; k++){
 			auxVec.at(k) = stoi(tokens.at(2*k + 9));
 			aux->at(k) = auxVec.at(k);
 		}
+		//std::cout << auxVec.at(1) << std::endl;
 //-------------------------------------------------------------------//
 		out<RawIMU>(msp, gyroOut);
 		gyroString = gyroOut.str();
